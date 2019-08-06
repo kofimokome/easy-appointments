@@ -32,13 +32,16 @@
                 </div>
                 <div class="step form-group">
                     <div class="block"></div>
-                    <label class="ea-label col-sm-4 control-label">
+                    <label class="ea-label col-sm-4 control-label hidden">
                         <?php _e($this->options->get_option_value("trans.worker"), 'easy-appointments'); ?>
                     </label>
                     <div class="col-sm-8">
-                        <select name="worker" data-c="worker" class="filter form-control">
+                        <select id="km-worker" name="worker" data-c="worker" class="filter form-control hidden">
                             <?php $this->get_options('staff', $location_id, $service_id, $worker_id) ?>
                         </select>
+                    </div>
+                    <div class="row" id="km-doctors">
+                       <!--Text will be filled via ajax-->
                     </div>
                 </div>
                 <div class="step calendar" class="filter">
@@ -62,22 +65,27 @@
                     <% _.each(settings.MetaFields, function(item,key,list) { %>
                     <% if (item.visible == "0") { return; } %>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label"><%= _.escape(item.label) %> <% if (item.required == "1") { %>*<% }
+                        <label class="col-sm-4 control-label"><%= _.escape(item.label) %> <% if (item.required == "1") {
+                            %>*<% }
                             %> : </label>
                         <div class="col-sm-8">
                             <!-- INPUT TYPE -->
                             <% if(item.type === 'INPUT') { %>
-                            <input class="form-control custom-field" maxlength="499" type="text" name="<%= item.slug %>" placeholder="<%= _.escape(item.mixed) %>"
+                            <input class="form-control custom-field" maxlength="499" type="text" name="<%= item.slug %>"
+                                   placeholder="<%= _.escape(item.mixed) %>"
                             <% if (item.required == "1") { %>data-rule-required="true" data-msg-required="<%=
                             settings['trans.field-required'] %>"<% } %> <% if (item.validation == "email") {
                             %>data-rule-email="true" data-msg-email="<%= settings['trans.error-email'] %>"<% } %>>
                             <!-- PHONE TYPE -->
                             <% } else if(item.type === 'PHONE') { %>
-                                <?php require __DIR__ . '/phone.field.tpl.php';?>
+                            <?php require __DIR__ . '/phone.field.tpl.php'; ?>
                             <!-- EMAIL TYPE -->
                             <% } else if(item.type === 'EMAIL') { %>
-                            <input class="form-control custom-field" maxlength="499" type="text" name="<%= item.slug %>" placeholder="<%= _.escape(item.mixed) %>"
-                            <% if (item.required == "1") { %>data-rule-required="true" data-msg-required="<%= settings['trans.field-required'] %>"<% } %> data-rule-email="true" data-msg-email="<%= settings['trans.error-email'] %>">
+                            <input class="form-control custom-field" maxlength="499" type="text" name="<%= item.slug %>"
+                                   placeholder="<%= _.escape(item.mixed) %>"
+                            <% if (item.required == "1") { %>data-rule-required="true" data-msg-required="<%=
+                            settings['trans.field-required'] %>"<% } %> data-rule-email="true" data-msg-email="<%=
+                            settings['trans.error-email'] %>">
                             <!-- SELECT TYPE -->
                             <% } else if(item.type === 'SELECT') { %>
                             <select class="form-control custom-field" name="<%= item.slug %>" <% if (item.required ==
@@ -126,9 +134,10 @@
                                     <input id="ea-gdpr" name="gdpr" type="checkbox" data-rule-required="true"
                                            data-msg-required="<%= settings['gdpr.message'] %>">
                                     <% if (settings['gdpr.link'] != '') { %>
-                                        <a href="<%= settings['gdpr.link'] %>" target="_blank"><%= settings['gdpr.label'] %></a>
+                                    <a href="<%= settings['gdpr.link'] %>" target="_blank"><%= settings['gdpr.label']
+                                        %></a>
                                     <% } else {%>
-                                        <%= settings['gdpr.label'] %>
+                                    <%= settings['gdpr.label'] %>
                                     <% } %>
                                 </label>
                             </div>
@@ -137,11 +146,14 @@
                     <% } %>
 
                     <% if (settings['captcha.site-key'] !== '') { %>
-                    <div style="width: 100%" class="g-recaptcha" data-sitekey="<%= settings['captcha.site-key'] %>"></div><br>
+                    <div style="width: 100%" class="g-recaptcha"
+                         data-sitekey="<%= settings['captcha.site-key'] %>"></div>
+                    <br>
                     <% } %>
 
                     <div class="form-group">
-                        <div class="col-sm-12 ea-actions-group" style="display: inline-flex; align-items: center; justify-content: center;">
+                        <div class="col-sm-12 ea-actions-group"
+                             style="display: inline-flex; align-items: center; justify-content: center;">
                             <?php echo apply_filters('ea_checkout_button', '<button class="ea-btn ea-submit btn btn-primary"><%= settings[\'trans.submit\'] %></button>'); ?>
                             <button class="ea-btn ea-cancel btn btn-default"><%= settings['trans.cancel'] %></button>
                         </div>
@@ -152,5 +164,5 @@
             <% } %>
         </form>
     </div>
-<div id="ea-loader"></div>
+    <div id="ea-loader"></div>
 </script>

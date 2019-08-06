@@ -1,22 +1,22 @@
-;(function ( $, window, document, undefined ) {
+;(function ($, window, document, undefined) {
 
     var pluginName = "eaBootstrap",
 
-    defaults = {
-        main_selector: '#ea-bootstrap-main',
-        main_template: null,
-        overview_selector: "#ea-appointments-overview",
-        overview_template: null,
-        store: {},
-        ajaxCount: 0,
-        initScrollOff: false
-    };
+        defaults = {
+            main_selector: '#ea-bootstrap-main',
+            main_template: null,
+            overview_selector: "#ea-appointments-overview",
+            overview_template: null,
+            store: {},
+            ajaxCount: 0,
+            initScrollOff: false
+        };
 
     // The actual plugin constructor
-    function Plugin ( element, options ) {
+    function Plugin(element, options) {
         this.element = element;
         this.$element = jQuery(element);
-        this.settings = jQuery.extend( {}, defaults, options );
+        this.settings = jQuery.extend({}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
         this.init();
@@ -30,56 +30,56 @@
             var plugin = this;
 
             if (ea_settings['datepicker'] && ea_settings['datepicker'].length > 1) {
-                moment.locale(ea_settings['datepicker'].substr(0,2));
+                moment.locale(ea_settings['datepicker'].substr(0, 2));
             }
 
             plugin.settings.main_template = _.template(jQuery(plugin.settings.main_selector).html());
 
             plugin.settings.overview_template = _.template(jQuery(plugin.settings.overview_selector).html());
-            this.$element.html(plugin.settings.main_template({settings:ea_settings}));
+            this.$element.html(plugin.settings.main_template({settings: ea_settings}));
 
             // close plugin if something is missing
             if (!this.settingsOk()) {
                 return;
             }
 
-            this.$element.find('.ea-phone-number-part, .ea-phone-country-code-part').change(function() {
+            this.$element.find('.ea-phone-number-part, .ea-phone-country-code-part').change(function () {
                 plugin.parsePhoneField($(this));
             });
 
             this.$element.find('form').validate();
 
             // select change event
-            this.$element.find('select').not('.custom-field').change(jQuery.proxy( this.getNextOptions, this ));
+            this.$element.find('select').not('.custom-field').change(jQuery.proxy(this.getNextOptions, this));
 
-            jQuery.datepicker.setDefaults( jQuery.datepicker.regional[ea_settings.datepicker] );
+            jQuery.datepicker.setDefaults(jQuery.datepicker.regional[ea_settings.datepicker]);
 
             var firstDay = ea_settings.start_of_week;
             var minDate = (ea_settings.min_date === null) ? 0 : ea_settings.min_date;
 
             // datePicker
             this.$element.find('.date').datepicker({
-                onSelect : jQuery.proxy( plugin.dateChange, plugin ),
-                dateFormat : 'yy-mm-dd',
+                onSelect: jQuery.proxy(plugin.dateChange, plugin),
+                dateFormat: 'yy-mm-dd',
                 minDate: minDate,
                 firstDay: firstDay,
                 maxDate: ea_settings.max_date,
                 defaultDate: ea_settings.default_date,
                 showWeek: ea_settings.show_week === '1',
                 // on month change event
-                onChangeMonthYear: function(year, month, widget) {
+                onChangeMonthYear: function (year, month, widget) {
                     plugin.selectChange(month, year);
                 },
                 // add class to every field, so we can later find it
-                beforeShowDay: function(date) {
+                beforeShowDay: function (date) {
                     var month = date.getMonth() + 1;
                     var days = date.getDate();
 
-                    if(month < 10) {
+                    if (month < 10) {
                         month = '0' + month;
                     }
 
-                    if(days < 10) {
+                    if (days < 10) {
                         days = '0' + days;
                     }
 
@@ -91,7 +91,7 @@
             this.hideDefault();
 
             // time is selected
-            this.$element.find('.ea-bootstrap').on('click', '.time-value', function(event) {
+            this.$element.find('.ea-bootstrap').on('click', '.time-value', function (event) {
 
                 event.preventDefault();
 
@@ -126,7 +126,7 @@
 
                     plugin.$element.find('#booking-overview').html(overview_content);
 
-                    plugin.$element.find('#ea-total-amount').on('checkout:done', function( event, checkoutId ) {
+                    plugin.$element.find('#ea-total-amount').on('checkout:done', function (event, checkoutId) {
                         var paypal_input = plugin.$element.find('#paypal_transaction_id');
 
                         if (paypal_input.length == 0) {
@@ -158,12 +158,12 @@
             this.blurNextSteps(this.$element.find('.step:visible:first'), true);
 
             if (ea_settings['pre.reservation'] === '1') {
-                this.$element.find('.ea-submit').on('click', jQuery.proxy( plugin.finalComformation, plugin ));
+                this.$element.find('.ea-submit').on('click', jQuery.proxy(plugin.finalComformation, plugin));
             } else {
-                this.$element.find('.ea-submit').on('click', jQuery.proxy( plugin.singleConformation, plugin ));
+                this.$element.find('.ea-submit').on('click', jQuery.proxy(plugin.singleConformation, plugin));
             }
 
-            this.$element.find('.ea-cancel').on('click', jQuery.proxy( plugin.cancelApp, plugin ));
+            this.$element.find('.ea-cancel').on('click', jQuery.proxy(plugin.cancelApp, plugin));
         },
 
         selectTimes: function ($element) {
@@ -228,7 +228,7 @@
             var errors = jQuery('<div style="border: 1px solid gray; padding: 20px;">');
             var valid = true;
 
-            selectOptions.each(function(index, element) {
+            selectOptions.each(function (index, element) {
                 var $el = jQuery(element);
                 var options = $el.children('option');
 
@@ -357,7 +357,9 @@
             var plugin = this;
 
             options.action = 'ea_next_step';
-            options.check  = ea_settings['check'];
+            options.check = ea_settings['check'];
+
+            //console.log(options); // next = 'worker'
 
             this.placeLoader(next_element.parent());
 
@@ -369,9 +371,27 @@
 
                 // options
                 jQuery.each(response, function (index, element) {
-                    var name = element.name;
-                    var $option = jQuery('<option value="' + element.id + '">' + name + '</option>');
 
+                    var name = element.name;
+                    if (options.next === 'worker') {
+                        var card = '<div class="col-sm-6 col-md-6" id="km-doctor-' + element.id + '" style="cursor: pointer">' +
+                            '                            <div class="thumbnail">' +
+                            '                                <img src="' + element.photo + '" alt="' + element.name + '">' +
+                            '                                <div class="caption">' +
+                            '                                    <h3>' + element.name + '</h3>' +
+                            '                                </div>' +
+                            '                            </div>' +
+                            '                        </div>';
+                        $("#km-doctors").append(card);
+                        $("#km-doctor-" + element.id).unbind();
+                        $("#km-doctor-" + element.id).click(function (e) {
+                            e.preventDefault();
+                            $("#km-worker").val(element.id).trigger('change');
+                        });
+                    } else {
+                        $("#km-doctors").empty();
+                    }
+                    var $option = jQuery('<option value="' + element.id + '">' + name + '</option>');
                     if ('price' in element && ea_settings['price.hide'] !== '1') {
                         // see if currency is before price or now
                         if (ea_settings['currency.before'] == '1') {
@@ -400,7 +420,7 @@
             }, 'json');
 
             // in case of failed ajax request
-            req.fail(function(xhr, status) {
+            req.fail(function (xhr, status) {
 
                 if (xhr.status === 403) {
                     alert(ea_settings['trans.nonce-expired']);
@@ -486,8 +506,8 @@
             var options = this.getPrevousOptions(calendarEl);
 
             options.action = 'ea_date_selected';
-            options.date   = dateString;
-            options.check  = ea_settings['check'];
+            options.date = dateString;
+            options.check = ea_settings['check'];
 
             this.placeLoader(calendarEl);
 
@@ -538,7 +558,7 @@
 
                 var newRow = jQuery(document.createElement('tr'))
                     .addClass('time-row')
-                    .append('<td colspan="' + colSpan +'" />');
+                    .append('<td colspan="' + colSpan + '" />');
 
                 newRow.find('td').append(next_element);
 
@@ -561,7 +581,7 @@
             });
 
             // in case of failed ajax request
-            req.fail(function(xhr, status) {
+            req.fail(function (xhr, status) {
 
                 if (xhr.status === 403) {
                     alert(ea_settings['trans.nonce-expired']);
@@ -732,7 +752,7 @@
 
                 plugin.$element.find('#booking-overview').html(overview_content);
 
-                plugin.$element.find('#ea-total-amount').on('checkout:done', function( event, checkoutId ) {
+                plugin.$element.find('#ea-total-amount').on('checkout:done', function (event, checkoutId) {
                     var paypal_input = plugin.$element.find('#paypal_transaction_id');
 
                     if (paypal_input.length == 0) {
@@ -786,7 +806,7 @@
             }
 
             var params = this.getJsonFromUrl();
-            
+
             if (options == null && params == null) {
                 return;
             }
@@ -862,7 +882,7 @@
                     var data = JSON.parse(ea_settings['advance.redirect']);
                     var service = plugin.$element.find('[name="service"]').val();
 
-                    var redirect = data.find(function(el) {
+                    var redirect = data.find(function (el) {
                         return el.service === service;
                     });
 
@@ -881,10 +901,10 @@
                     }, 2000);
                 }
             }, 'json')
-            .fail(jQuery.proxy(function (response, status, error) {
-                alert(response.responseJSON.message);
-                this.$element.find('.ea-submit').prop('disabled', false);
-            }, plugin));
+                .fail(jQuery.proxy(function (response, status, error) {
+                    alert(response.responseJSON.message);
+                    this.$element.find('.ea-submit').prop('disabled', false);
+                }, plugin));
         },
 
         /**
@@ -927,13 +947,13 @@
 
                 plugin.finalComformation(event);
             }, 'json')
-            .fail(jQuery.proxy(function (response) {
-                alert(response.responseJSON.message);
-                this.$element.find('.ea-submit').prop('disabled', false);
-            }, plugin))
-            .always(jQuery.proxy(function () {
-                plugin.removeLoader();
-            }, plugin));
+                .fail(jQuery.proxy(function (response) {
+                    alert(response.responseJSON.message);
+                    this.$element.find('.ea-submit').prop('disabled', false);
+                }, plugin))
+                .always(jQuery.proxy(function () {
+                    plugin.removeLoader();
+                }, plugin));
         },
         /**
          *
@@ -1025,15 +1045,15 @@
             }
 
             jQuery('html, body').animate({
-                scrollTop: ( element.offset().top - 20 )
+                scrollTop: (element.offset().top - 20)
             }, 500);
         },
 
-        getJsonFromUrl: function() {
+        getJsonFromUrl: function () {
             var query = location.search.substr(1);
             var result = {};
 
-            query.split("&").forEach(function(part) {
+            query.split("&").forEach(function (part) {
                 var item = part.split("=");
                 result[item[0]] = decodeURIComponent(item[1]);
             });
