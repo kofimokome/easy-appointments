@@ -57,7 +57,11 @@ class EAAdminPanel
 
         // Init action
         add_action('admin_init', array($this, 'init_scripts'));
-        //add_action( 'admin_enqueue_scripts', array( $this, 'init' ) );
+
+
+        add_action('admin_enqueue_scripts', function () {
+            wp_enqueue_media();
+        });
     }
 
     /**
@@ -242,7 +246,7 @@ class EAAdminPanel
         }
 
         // we need tinyMce for WYSIWYG editor
-        wp_enqueue_script('tinymce_js', includes_url( 'js/tinymce/' ) . 'wp-tinymce.php', array( 'jquery' ), false, true );
+        wp_enqueue_script('tinymce_js', includes_url('js/tinymce/') . 'wp-tinymce.php', array('jquery'), false, true);
         wp_enqueue_script('ea-tinymce');
         wp_enqueue_style('ea-editor-style', includes_url('/css/editor.min.css'));
 
@@ -256,7 +260,7 @@ class EAAdminPanel
         wp_enqueue_style('thickbox');
         wp_enqueue_style('jquery-chosen');
         wp_enqueue_style('ea-admin-fonts-css');
-        
+
 
         // style editor
 
@@ -369,8 +373,8 @@ class EAAdminPanel
 
         $screen = get_current_screen();
         $screen->add_help_tab(array(
-            'id'    => 'easyapp_settings_help'
-        , 'title'   => 'Appointments manager'
+            'id' => 'easyapp_settings_help'
+        , 'title' => 'Appointments manager'
         , 'content' => '<p>Use filter for date to reduce output results for appointments. You can filter by <b>location</b>, <b>service</b>, <b>worker</b>, <b>status</b> and <b>date</b>.</p>'
         ));
 
@@ -396,8 +400,8 @@ class EAAdminPanel
 
         $screen = get_current_screen();
         $screen->add_help_tab(array(
-            'id'    => 'easyapp_settings_help'
-        , 'title'   => 'Time table'
+            'id' => 'easyapp_settings_help'
+        , 'title' => 'Time table'
         , 'content' => '<p>Time table report shows free slots for every location - service - worker connection on whole month</p>' .
                 '<p>There can you see free times an how many slots are taken.</p>'
         ));
@@ -424,8 +428,8 @@ class EAAdminPanel
 
         $screen = get_current_screen();
         $screen->add_help_tab(array(
-            'id'    => 'easyapp_settings_help'
-        , 'title'   => 'Settings'
+            'id' => 'easyapp_settings_help'
+        , 'title' => 'Settings'
         , 'content' => '<p>You need to define at least one location, worker and service! Without that widget won\'t work.</p>'
         ));
 

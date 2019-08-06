@@ -139,6 +139,7 @@ CREATE TABLE {$table_prefix}ea_staff (
   description text,
   email varchar(100) DEFAULT NULL,
   phone varchar(45) DEFAULT NULL,
+  photo varchar(255) DEFAULT NULL,
   PRIMARY KEY  (id)
 ) $charset_collate ;
 EOT;

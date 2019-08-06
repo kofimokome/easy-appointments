@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
 
     var EA = {};
 
@@ -6,102 +6,109 @@
      * Single location
      */
     EA.Location = Backbone.Model.extend({
-        defaults : {
-            name:"",
+        defaults: {
+            name: "",
             address: "",
             location: "",
             cord: null
         },
 
-        url: function() { return ajaxurl+'?action=ea_location&id=' + encodeURIComponent(this.id) },
+        url: function () {
+            return ajaxurl + '?action=ea_location&id=' + encodeURIComponent(this.id)
+        },
 
-        toJSON : function() {
-            var attrs = _.clone( this.attributes );
+        toJSON: function () {
+            var attrs = _.clone(this.attributes);
             return attrs;
         }
-    });    /**
+    });
+    /**
      * Service model
      */
     EA.Service = Backbone.Model.extend({
-        defaults : {
-            name:"",
+        defaults: {
+            name: "",
             duration: 60,
             slot_step: 60,
             price: 10
         },
-        url : function() {
-            return ajaxurl+'?action=ea_service&id=' + this.id;
+        url: function () {
+            return ajaxurl + '?action=ea_service&id=' + this.id;
         },
-        toJSON : function() {
-            var attrs = _.clone( this.attributes );
+        toJSON: function () {
+            var attrs = _.clone(this.attributes);
             return attrs;
         }
-    });    /**
+    });
+    /**
      * Service model
      */
     EA.Worker = Backbone.Model.extend({
-        defaults : {
-            name:"",
-            description : "",
+        defaults: {
+            name: "",
+            description: "",
             email: "",
             phone: ""
         },
-        url : function() {
-            return ajaxurl+'?action=ea_worker&id=' + this.id;
+        url: function () {
+            return ajaxurl + '?action=ea_worker&id=' + this.id;
         },
-        toJSON : function() {
-            var attrs = _.clone( this.attributes );
+        toJSON: function () {
+            var attrs = _.clone(this.attributes);
             return attrs;
         }
-    });    /**
+    });
+    /**
      * Single connection
      */
     EA.Connection = Backbone.Model.extend({
-        defaults : {
-            group_id : null,
-            location : null,
-            service : null,
-            worker : null,
-            day_of_week : [],
-            time_from : null,
-            time_to : null,
-            day_from : '2018-01-01',
-            day_to : '2020-01-01',
-            is_working : 0
+        defaults: {
+            group_id: null,
+            location: null,
+            service: null,
+            worker: null,
+            day_of_week: [],
+            time_from: null,
+            time_to: null,
+            day_from: '2018-01-01',
+            day_to: '2020-01-01',
+            is_working: 0
         },
 
-        url: function() { return ajaxurl+'?action=ea_connection&id=' + encodeURIComponent(this.id) },
+        url: function () {
+            return ajaxurl + '?action=ea_connection&id=' + encodeURIComponent(this.id)
+        },
 
-        toJSON: function() {
-            var attrs = _.clone( this.attributes );
+        toJSON: function () {
+            var attrs = _.clone(this.attributes);
 
             return attrs;
         },
 
-        parse: function(data, options) {
+        parse: function (data, options) {
 
-            if(typeof data.day_of_week !== "undefined" && data.day_of_week != null) {
+            if (typeof data.day_of_week !== "undefined" && data.day_of_week != null) {
                 data.day_of_week = data.day_of_week.split(',');
             } else {
                 // console.log(this.get('day_of_week').split(','));
                 this.set('day_of_week', this.get('day_of_week'));
             }
 
-            if(typeof data.time_from !== "undefined" && typeof data.time_to !== "undefined") {
+            if (typeof data.time_from !== "undefined" && typeof data.time_to !== "undefined") {
 
-                if(data.time_from.length === 8) {
+                if (data.time_from.length === 8) {
                     data.time_from = data.time_from.substring(0, 5);
                 }
 
-                if(data.time_to.length === 8) {
-                        data.time_to = data.time_to.substring(0, 5);
+                if (data.time_to.length === 8) {
+                    data.time_to = data.time_to.substring(0, 5);
                 }
             }
 
             return data;
         },
 
-        save: function(attrs, options) {
+        save: function (attrs, options) {
             options || (options = {});
             attrs || (attrs = _.clone(this.attributes));
 
@@ -109,113 +116,126 @@
 
             return Backbone.Model.prototype.save.call(this, attrs, options);
         }
-    });    /**
+    });
+    /**
      * Service model
      */
     EA.Setting = Backbone.Model.extend({
-        defaults : {
-            ea_key:"",
-            ea_value : "",
+        defaults: {
+            ea_key: "",
+            ea_value: "",
             type: ""
         },
-        url : function() {
-            return ajaxurl+'?action=ea_setting&id=' + this.id;
+        url: function () {
+            return ajaxurl + '?action=ea_setting&id=' + this.id;
         },
-        toJSON : function() {
-            var attrs = _.clone( this.attributes );
+        toJSON: function () {
+            var attrs = _.clone(this.attributes);
             return attrs;
         },
-        parse: function(data, options) {
+        parse: function (data, options) {
             // console.log(data);
             return data;
         }
-    });    /**
+    });
+    /**
      * Single field
      */
     EA.Field = Backbone.Model.extend({
 
-    	defaults : {
-    		type: 'INPUT',
-    		slug: '',
-    		label: '',
-    		default_value: '',
-    		validation: false,
-    		mixed: '',
-    		visible: true,
-    		required: false,
-    		position: 10,
-    	},
-    	url: function() { return ajaxurl+'?action=ea_field&id=' + encodeURIComponent(this.id); },
-    	toJSON: function() {
-    		var attrs = _.clone( this.attributes );
-    		//console.log(attrs);
-    		return attrs;
-    	}
-    });    /**
+        defaults: {
+            type: 'INPUT',
+            slug: '',
+            label: '',
+            default_value: '',
+            validation: false,
+            mixed: '',
+            visible: true,
+            required: false,
+            position: 10,
+        },
+        url: function () {
+            return ajaxurl + '?action=ea_field&id=' + encodeURIComponent(this.id);
+        },
+        toJSON: function () {
+            var attrs = _.clone(this.attributes);
+            //console.log(attrs);
+            return attrs;
+        }
+    });
+    /**
      * Single error
      */
     EA.Error = Backbone.Model.extend({
 
-        defaults : {
+        defaults: {
             error_type: '',
             errors: '',
             errors_data: '',
         },
-        url: function() { return ajaxurl+'?action=ea_error&id=' + encodeURIComponent(this.id); },
-    });    /**
+        url: function () {
+            return ajaxurl + '?action=ea_error&id=' + encodeURIComponent(this.id);
+        },
+    });
+    /**
      * Connections collection
      */
     EA.Fields = Backbone.Collection.extend({
-        url : ajaxurl+'?action=ea_fields',
+        url: ajaxurl + '?action=ea_fields',
         model: EA.Field
-    });    /**
+    });
+    /**
      * Locations collection
      */
     EA.Locations = Backbone.Collection.extend({
-        url : ajaxurl+'?action=ea_locations',
+        url: ajaxurl + '?action=ea_locations',
         model: EA.Location,
-        cacheData: function() {
-            if(typeof eaData !== 'undefined') {
+        cacheData: function () {
+            if (typeof eaData !== 'undefined') {
                 eaData.Locations = this.toJSON();
             }
         }
-    });    /**
+    });
+    /**
      * Services collection
      */
     EA.Services = Backbone.Collection.extend({
-        url : ajaxurl+'?action=ea_services',
+        url: ajaxurl + '?action=ea_services',
         model: EA.Service,
-        parse: function(response) {
-        	// console.log(response);
-        	return response;
-      	},
-      	cacheData: function() {
-            if(typeof eaData !== 'undefined') {
+        parse: function (response) {
+            // console.log(response);
+            return response;
+        },
+        cacheData: function () {
+            if (typeof eaData !== 'undefined') {
                 eaData.Services = this.toJSON();
             }
         }
-    });    /**
+    });
+    /**
      * Workers collection
      */
     EA.Workers = Backbone.Collection.extend({
-        url : ajaxurl+'?action=ea_workers',
+        url: ajaxurl + '?action=ea_workers',
         model: EA.Worker,
-        cacheData: function() {
-            if(typeof eaData !== 'undefined') {
+        cacheData: function () {
+            if (typeof eaData !== 'undefined') {
                 eaData.Workers = this.toJSON();
             }
         }
-    });    /**
+    });
+    /**
      * Connections collection
      */
     EA.Connections = Backbone.Collection.extend({
-        url : ajaxurl+'?action=ea_connections',
+        url: ajaxurl + '?action=ea_connections',
         model: EA.Connection
-    });    /**
+    });
+    /**
      * Settings collection
      */
     EA.Settings = Backbone.Collection.extend({
-        url : ajaxurl+'?action=ea_settings',
+        url: ajaxurl + '?action=ea_settings',
         model: EA.Setting
     });
 
@@ -223,15 +243,16 @@
      * Wrapper around settings data
      */
     EA.SettingsWrapper = Backbone.Model.extend({
-    	url : ajaxurl+'?action=ea_settings',
-    	/*toJSON : function() {
-    		return this.model.toJSON();
-    	}*/
-    });    /**
+        url: ajaxurl + '?action=ea_settings',
+        /*toJSON : function() {
+            return this.model.toJSON();
+        }*/
+    });
+    /**
      * Connections collection
      */
     EA.Errors = Backbone.Collection.extend({
-        url : ajaxurl+'?action=ea_errors',
+        url: ajaxurl + '?action=ea_errors',
         model: EA.Error
     });
     /**
@@ -239,25 +260,25 @@
      */
     EA.LocationView = Backbone.View.extend({
 
-        tagName:  "tr",
+        tagName: "tr",
 
         // show template
-        template_show : _.template( jQuery("#ea-tpl-locations-row").html() ),
+        template_show: _.template(jQuery("#ea-tpl-locations-row").html()),
 
         // edit template
-        template_edit : _.template( jQuery("#ea-tpl-locations-row-edit").html() ),
+        template_edit: _.template(jQuery("#ea-tpl-locations-row-edit").html()),
 
-        template : null,
+        template: null,
 
-        edit_mode : false,
+        edit_mode: false,
 
         events: {
-            "click .btn-edit"   : "edit",
-            "dblclick"          : "edit",
-            "click .btn-del"    : "removeItem",
-            "click .btn-save"   : "save",
-            "click .btn-cancel" : "cancel",
-            "keydown input"     : "keydownEvent"
+            "click .btn-edit": "edit",
+            "dblclick": "edit",
+            "click .btn-del": "removeItem",
+            "click .btn-save": "save",
+            "click .btn-cancel": "cancel",
+            "keydown input": "keydownEvent"
         },
 
         initialize: function (options) {
@@ -269,17 +290,17 @@
 
         render: function () {
 
-            var renderedContent = this.template( { row : this.model.toJSON() } );
+            var renderedContent = this.template({row: this.model.toJSON()});
 
-            jQuery(this.el).html( renderedContent );
+            jQuery(this.el).html(renderedContent);
 
             this.$el.addClass('ea-row');
 
             return this;
         },
 
-        edit: function() {
-            if(this.edit_mode) {
+        edit: function () {
+            if (this.edit_mode) {
                 return;
             }
 
@@ -294,11 +315,11 @@
             this.edit_mode = true;
         },
 
-        save: function() {
+        save: function () {
             var location = this.model;
             var view = this;
 
-            jQuery.each(this.$el.find('input'), function(index, elem){
+            jQuery.each(this.$el.find('input'), function (index, elem) {
                 location.set(jQuery(elem).data('prop'), jQuery(elem).val());
             });
 
@@ -306,7 +327,7 @@
 
             // Saves location
             location.save(null, {
-                success: function(model, response) {
+                success: function (model, response) {
                     view.render();
                     model.collection.cacheData();
                     view.parent.showMessage('Saved...');
@@ -321,9 +342,9 @@
             this.edit_mode = false;
         },
 
-        cancel: function() {
+        cancel: function () {
             // If is new remove model/view
-            if(this.model.isNew()) {
+            if (this.model.isNew()) {
                 this.parent.showMessage('New canceled');
 
                 this.model.destroy();
@@ -341,18 +362,18 @@
         },
 
         // Delets model and view
-        removeItem: function() {
+        removeItem: function () {
             var view = this;
 
-            if(confirm('Are you sure?')) {
+            if (confirm('Are you sure?')) {
                 view.parent.showMessage('Deleting...');
 
                 this.model.destroy({
-                    success: function(model, response) {
+                    success: function (model, response) {
                         view.remove();
                         view.parent.showMessage('Done...');
                     },
-                    error: function(model, response) {
+                    error: function (model, response) {
                         view.parent.showMessage('Error...');
                     }
                 });
@@ -360,25 +381,25 @@
         },
 
         //
-        keydownEvent: function(e) {
+        keydownEvent: function (e) {
             switch (e.which) {
                 // esc
                 case 27 :
                     this.cancel();
-                break;
+                    break;
             }
         }
     });    // Main tamplate
     EA.LocationsView = Backbone.View.extend({
         //el: jQuery("#wpbody-content"),
 
-        template : _.template( jQuery("#ea-tpl-locations-table").html() ),
+        template: _.template(jQuery("#ea-tpl-locations-table").html()),
 
-        rowsView : null,
+        rowsView: null,
 
-        events : {
-            "click .add-new" : "addNew",
-            "click .refresh-list" : "refreshList",
+        events: {
+            "click .add-new": "addNew",
+            "click .refresh-list": "refreshList",
 
             "change #sort-locations-by": "sortChange",
             "change #order-locations-by": "sortChange"
@@ -386,7 +407,7 @@
 
         initialize: function () {
             // Get pre chache data
-            if(typeof eaData !== 'undefined'){
+            if (typeof eaData !== 'undefined') {
                 this.collection = new EA.Locations(eaData.Locations);
             } else {
                 this.collection = new EA.Locations();
@@ -399,9 +420,9 @@
             this.collection.bind("reset", this.render, this);
 
             // if there is no data in cache
-            if( this.collection.length === 0 ) {
+            if (this.collection.length === 0) {
                 // Get data from server
-                this.collection.fetch( {reset:true} );
+                this.collection.fetch({reset: true});
             }
         },
 
@@ -409,11 +430,11 @@
 
             this.$el.empty(); // clear the element to make sure you don't double your contact view
 
-            this.$el.html( this.template );
+            this.$el.html(this.template);
 
             var self = this; // so you can use this inside the each function
 
-            this.collection.each(function(location) { // iterate through the collection
+            this.collection.each(function (location) { // iterate through the collection
                 var locationView = new EA.LocationView({
                     model: location,
                     parent: self
@@ -428,7 +449,7 @@
             return this;
         },
 
-        addNew: function(e) {
+        addNew: function (e) {
             e.preventDefault();
 
             var location = new EA.Location();
@@ -446,25 +467,25 @@
             locationView.edit();
         },
 
-        refreshList: function(e) {
+        refreshList: function (e) {
             e.preventDefault();
 
             var that = this;
 
             this.showMessage('Loading table...', true);
 
-            this.collection.fetch( {reset:true}, {
-                error: function(response){
+            this.collection.fetch({reset: true}, {
+                error: function (response) {
                     that.showMessage('');
                     alert('Error, try refresh again.');
                 },
-                success: function(){
+                success: function () {
                     that.showMessage('');
                 }
             });
         },
 
-        destroy_view: function() {
+        destroy_view: function () {
 
             // COMPLETELY UNBIND THE VIEW
             this.undelegateEvents();
@@ -477,10 +498,10 @@
 
         },
 
-        showMessage: function(text, hold) {
+        showMessage: function (text, hold) {
             var onHold = hold || false;
 
-            if(onHold) {
+            if (onHold) {
                 this.$el.find('#status-msg').text(text).show();
             } else {
                 this.$el.find('#status-msg').text(text).show().delay(2000).fadeOut();
@@ -509,33 +530,34 @@
                 ea_settings['sort.locations-by'] = column;
                 ea_settings['order.locations-by'] = type;
 
-                plugin.refreshList(jQuery.Event( "click" ));
+                plugin.refreshList(jQuery.Event("click"));
             });
         }
-    });    /**
+    });
+    /**
      * Services main view
      */
     EA.ServiceView = Backbone.View.extend({
 
-        tagName:  "tr",
+        tagName: "tr",
 
         // show template
-        template_show : _.template( jQuery("#ea-tpl-services-row").html() ),
+        template_show: _.template(jQuery("#ea-tpl-services-row").html()),
 
         // edit template
-        template_edit : _.template( jQuery("#ea-tpl-services-row-edit").html() ),
+        template_edit: _.template(jQuery("#ea-tpl-services-row-edit").html()),
 
-        template : null,
+        template: null,
 
-        edit_mode : false,
+        edit_mode: false,
 
         events: {
-            "click .btn-edit"   : "edit",
-            "dblclick"          : "edit",
-            "click .btn-del"    : "removeItem",
-            "click .btn-save"   : "save",
-            "click .btn-cancel" : "cancel",
-            "keydown input"     : "keydownEvent"
+            "click .btn-edit": "edit",
+            "dblclick": "edit",
+            "click .btn-del": "removeItem",
+            "click .btn-save": "save",
+            "click .btn-cancel": "cancel",
+            "keydown input": "keydownEvent"
         },
 
         initialize: function (options) {
@@ -547,18 +569,18 @@
 
         render: function () {
 
-            var renderedContent = this.template( { row : this.model.toJSON() } );
+            var renderedContent = this.template({row: this.model.toJSON()});
 
-            jQuery(this.el).html( renderedContent );
+            jQuery(this.el).html(renderedContent);
 
             this.$el.addClass('ea-row');
 
             return this;
         },
 
-        edit: function() {
+        edit: function () {
 
-            if(this.edit_mode) {
+            if (this.edit_mode) {
                 return;
             }
 
@@ -573,11 +595,11 @@
             this.edit_mode = true;
         },
 
-        save: function() {
+        save: function () {
             var service = this.model;
             var view = this;
 
-            jQuery.each(this.$el.find('input'), function(index, elem){
+            jQuery.each(this.$el.find('input'), function (index, elem) {
                 service.set(jQuery(elem).data('prop'), jQuery(elem).val());
             });
 
@@ -592,7 +614,7 @@
 
             // Saves Service
             service.save(null, {
-                success: function(model, response) {
+                success: function (model, response) {
                     view.render();
                     model.collection.cacheData();
                     view.parent.showMessage('Saved...');
@@ -607,9 +629,9 @@
             this.edit_mode = false;
         },
 
-        cancel: function() {
+        cancel: function () {
             // If is new remove model/view
-            if(this.model.isNew()) {
+            if (this.model.isNew()) {
                 this.model.destroy();
                 this.remove();
 
@@ -629,18 +651,18 @@
         },
 
         // Delets model and view
-        removeItem: function() {
+        removeItem: function () {
             var view = this;
 
-            if(confirm('Are you sure?')) {
+            if (confirm('Are you sure?')) {
                 view.parent.showMessage('Deleting...');
 
                 this.model.destroy({
-                    success: function(model, response) {
+                    success: function (model, response) {
                         view.remove();
                         view.parent.showMessage('Done...');
                     },
-                    error: function(model, response) {
+                    error: function (model, response) {
                         view.parent.showMessage('Error...');
                     }
                 });
@@ -648,32 +670,32 @@
         },
 
         //
-        keydownEvent: function(e) {
+        keydownEvent: function (e) {
             switch (e.which) {
                 // esc
                 case 27 :
                     this.cancel();
-                break;
+                    break;
             }
         }
     });    // Main tamplate
     EA.ServicesView = Backbone.View.extend({
         //el: jQuery("#wpbody-content"),
 
-        template : _.template( jQuery("#ea-tpl-services-table").html() ),
+        template: _.template(jQuery("#ea-tpl-services-table").html()),
 
-        rowsView : null,
+        rowsView: null,
 
-        events : {
-            "click .add-new" : "addNew",
-            "click .refresh-list" : "refreshList",
+        events: {
+            "click .add-new": "addNew",
+            "click .refresh-list": "refreshList",
             "change #sort-services-by": "sortChange",
             "change #order-services-by": "sortChange"
         },
 
         initialize: function () {
             // Get pre chache data
-            if(typeof eaData !== 'undefined'){
+            if (typeof eaData !== 'undefined') {
                 this.collection = new EA.Services(eaData.Services);
             } else {
                 this.collection = new EA.Services();
@@ -686,9 +708,9 @@
             this.collection.bind("reset", this.render, this);
 
             // if there is no data in cache
-            if( this.collection.length == 0 ) {
+            if (this.collection.length == 0) {
                 // Get data from server
-                this.collection.fetch( {reset:true} );
+                this.collection.fetch({reset: true});
             }
         },
 
@@ -696,11 +718,11 @@
 
             this.$el.empty(); // clear the element to make sure you don't double your contact view
 
-            this.$el.html( this.template );
+            this.$el.html(this.template);
 
             var self = this; // so you can use this inside the each function
 
-            this.collection.each(function(service) { // iterate through the collection
+            this.collection.each(function (service) { // iterate through the collection
                 var serviceView = new EA.ServiceView({
                     model: service,
                     parent: self
@@ -709,7 +731,7 @@
                 self.$el.find("#ea-services").append(serviceView.$el);
             });
 
-            if(typeof eaData !== 'undefined') {
+            if (typeof eaData !== 'undefined') {
                 eaData.Services = this.collection.toJSON();
             }
 
@@ -719,7 +741,7 @@
             return this;
         },
 
-        addNew: function(e) {
+        addNew: function (e) {
             e.preventDefault();
 
             var service = new EA.Service();
@@ -737,25 +759,25 @@
             serviceView.edit();
         },
 
-        refreshList: function(e) {
+        refreshList: function (e) {
             e.preventDefault();
 
             var that = this;
 
             this.showMessage('Loading table...', true);
 
-            this.collection.fetch( {reset:true}, {
-                error: function(response) {
+            this.collection.fetch({reset: true}, {
+                error: function (response) {
                     that.showMessage('');
                     alert('Error, try refresh again.');
                 },
-                success: function() {
+                success: function () {
                     that.showMessage('');
                 }
             });
         },
 
-        destroy_view: function() {
+        destroy_view: function () {
             // COMPLETELY UNBIND THE VIEW
             this.undelegateEvents();
 
@@ -766,10 +788,10 @@
             Backbone.View.prototype.remove.call(this);
         },
 
-        showMessage: function(text, hold) {
+        showMessage: function (text, hold) {
             var onHold = hold || false;
 
-            if(onHold) {
+            if (onHold) {
                 this.$el.find('#status-msg').text(text).show();
             } else {
                 this.$el.find('#status-msg').text(text).show().delay(2000).fadeOut();
@@ -798,33 +820,36 @@
                 ea_settings['sort.services-by'] = column;
                 ea_settings['order.services-by'] = type;
 
-                plugin.refreshList(jQuery.Event( "click" ));
+                plugin.refreshList(jQuery.Event("click"));
             });
         }
-    });    /**
+    });
+    /**
      * Worker main view
      */
     EA.WorkerView = Backbone.View.extend({
 
-        tagName:  "tr",
+        tagName: "tr",
 
         // show template
-        template_show : _.template( jQuery("#ea-tpl-worker-row").html() ),
+        template_show: _.template(jQuery("#ea-tpl-worker-row").html()),
 
         // edit template
-        template_edit : _.template( jQuery("#ea-tpl-worker-row-edit").html() ),
+        template_edit: _.template(jQuery("#ea-tpl-worker-row-edit").html()),
 
-        template : null,
+        template: null,
 
-        edit_mode : false,
+        edit_mode: false,
 
         events: {
-            "click .btn-edit"   : "edit",
-            "dblclick"          : "edit",
-            "click .btn-del"    : "removeItem",
-            "click .btn-save"   : "save",
-            "click .btn-cancel" : "cancel",
-            "keydown input"     : "keydownEvent"
+            "click .btn-edit": "edit",
+            "click #btn-photo": "upload",
+            "click #btn-photo-remove": "remove",
+            "dblclick": "edit",
+            "click .btn-del": "removeItem",
+            "click .btn-save": "save",
+            "click .btn-cancel": "cancel",
+            "keydown input": "keydownEvent"
         },
 
         initialize: function (options) {
@@ -836,18 +861,17 @@
 
         render: function () {
 
-            var renderedContent = this.template( { row : this.model.toJSON() } );
+            var renderedContent = this.template({row: this.model.toJSON()});
 
-            jQuery(this.el).html( renderedContent );
+            jQuery(this.el).html(renderedContent);
 
             this.$el.addClass('ea-row');
 
             return this;
         },
 
-        edit: function() {
-
-            if(this.edit_mode) {
+        edit: function () {
+            if (this.edit_mode) {
                 return;
             }
 
@@ -860,13 +884,59 @@
             this.$el.find('input:first').focus();
 
             this.edit_mode = true;
+
+            jQuery(function ($) {
+                    if (($("#km-photo").val().trim()) === '') {
+                        $("#btn-photo-remove").hide();
+                    } else {
+                        $("#btn-photo").hide();
+                    }
+                }
+            );
         },
 
-        save: function() {
+        upload: function () {
+
+            /* if(this.edit_mode) {
+                 return;
+             }*/
+
+            jQuery(function ($) {
+                    var send_attachment_bkp = wp.media.editor.send.attachment;
+                    var photo = $("#km-photo");
+                    wp.media.editor.send.attachment = function (props, attachment) {
+                        //$(button).parent().prev().attr('src', attachment.url);
+                        photo.val(attachment.url);
+                        wp.media.editor.send.attachment = send_attachment_bkp;
+                    };
+                    wp.media.editor.open(photo);
+
+                    $("#btn-photo").toggle();
+                    $("#btn-photo-remove").toggle();
+                }
+            );
+        },
+
+        remove: function () {
+
+            /* if(this.edit_mode) {
+                 return;
+             }*/
+
+            jQuery(function ($) {
+
+                    var photo = $("#km-photo").val("");
+                    $("#btn-photo").toggle();
+                    $("#btn-photo-remove").toggle();
+                }
+            );
+        },
+
+        save: function () {
             var worker = this.model;
             var view = this;
 
-            jQuery.each(this.$el.find('input'), function(index, elem){
+            jQuery.each(this.$el.find('input'), function (index, elem) {
                 worker.set(jQuery(elem).data('prop'), jQuery(elem).val());
             });
 
@@ -878,7 +948,7 @@
 
             // Saves Worker
             worker.save(null, {
-                success: function(model, response) {
+                success: function (model, response) {
                     view.render();
                     model.collection.cacheData();
                     view.parent.showMessage('Saved...');
@@ -899,7 +969,7 @@
          * @param email
          * @returns {boolean}
          */
-        checkEmailAddress: function(email) {
+        checkEmailAddress: function (email) {
 
             var re = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             var valid = re.test(email);
@@ -908,8 +978,8 @@
                 var emailField = this.$el.find('[data-prop="email"]');
 
                 emailField.css({border: '2px solid #ff0000'}).animate({
-                        backgroundColor: 'white'
-                    }, 2000, function() {
+                    backgroundColor: 'white'
+                }, 2000, function () {
                     emailField.css({border: '1px solid #ccc'});
                 });
             }
@@ -917,7 +987,7 @@
             return valid;
         },
 
-        cancel: function() {
+        cancel: function () {
             // If is new remove model/view
             if (this.model.isNew()) {
                 this.parent.showMessage('New canceled');
@@ -938,18 +1008,18 @@
         },
 
         // Delets model and view
-        removeItem: function() {
+        removeItem: function () {
             var view = this;
 
-            if(confirm('Are you sure?')) {
+            if (confirm('Are you sure?')) {
                 view.parent.showMessage('Deleting...');
 
                 view.model.destroy({
-                    success: function(model, response) {
+                    success: function (model, response) {
                         view.remove();
                         view.parent.showMessage('Done...');
                     },
-                    error: function(model, response) {
+                    error: function (model, response) {
                         view.parent.showMessage('Error...');
                     }
                 });
@@ -957,12 +1027,12 @@
         },
 
         //
-        keydownEvent: function(e) {
+        keydownEvent: function (e) {
             switch (e.which) {
                 // esc
                 case 27 :
                     this.cancel();
-                break;
+                    break;
             }
         }
     });    // Main Template for Workers
@@ -1101,26 +1171,27 @@
                 ea_settings['sort.workers-by'] = column;
                 ea_settings['order.workers-by'] = type;
 
-                plugin.refreshList(jQuery.Event( "click" ));
+                plugin.refreshList(jQuery.Event("click"));
             });
         }
-    });    /**
+    });
+    /**
      *
      */
     EA.ConnectionView = Backbone.View.extend({
-        tagName:  "tr",
+        tagName: "tr",
 
         // show template
-        template_show : _.template( jQuery("#ea-tpl-connection-row").html() ),
+        template_show: _.template(jQuery("#ea-tpl-connection-row").html()),
 
         // edit template
-        template_edit : _.template( jQuery("#ea-tpl-connection-row-edit").html() ),
+        template_edit: _.template(jQuery("#ea-tpl-connection-row-edit").html()),
 
-        template : null,
+        template: null,
 
-        locations : null,
-        services : null,
-        workers : null,
+        locations: null,
+        services: null,
+        workers: null,
 
         /**
          * Is edit mode active
@@ -1128,14 +1199,14 @@
         edit_mode: false,
 
         events: {
-            "click .btn-edit"   : "edit",
-            "dblclick"          : "edit",
-            "click .btn-del"    : "removeItem",
-            "click .btn-save"   : "save",
-            "click .btn-clone"  : "clone",
-            "click .btn-cancel" : "cancel",
-            "keydown input"     : "keydownEvent",
-            "keydown select"    : "keydownEvent"
+            "click .btn-edit": "edit",
+            "dblclick": "edit",
+            "click .btn-del": "removeItem",
+            "click .btn-save": "save",
+            "click .btn-clone": "clone",
+            "click .btn-cancel": "cancel",
+            "keydown input": "keydownEvent",
+            "keydown select": "keydownEvent"
         },
 
         initialize: function (options) {
@@ -1147,27 +1218,27 @@
             var self = this;
 
             //after save split days of week
-            if(!jQuery.isArray(this.model.get('day_of_week'))) {
+            if (!jQuery.isArray(this.model.get('day_of_week'))) {
                 this.model.set('day_of_week', this.model.get('day_of_week').split(','));
             }
 
-            var renderedContent = this.template( {
-                row       : this.model.toJSON(),
-                locations : self.locations.toJSON(),
-                services  : self.services.toJSON(),
-                workers   : self.workers.toJSON()
-            } );
+            var renderedContent = this.template({
+                row: this.model.toJSON(),
+                locations: self.locations.toJSON(),
+                services: self.services.toJSON(),
+                workers: self.workers.toJSON()
+            });
 
-            jQuery(this.el).html( renderedContent );
+            jQuery(this.el).html(renderedContent);
 
             this.$el.addClass('ea-row');
 
             return this;
         },
 
-        edit: function() {
+        edit: function () {
 
-            if(this.edit_mode) {
+            if (this.edit_mode) {
                 return;
             }
 
@@ -1197,11 +1268,11 @@
             this.edit_mode = true;
         },
 
-        save: function() {
+        save: function () {
             var connection = this.model;
             var view = this;
 
-            jQuery.each(this.$el.find('input, select'), function(index, elem){
+            jQuery.each(this.$el.find('input, select'), function (index, elem) {
                 connection.set(jQuery(elem).data('prop'), jQuery(elem).val());
             });
 
@@ -1213,7 +1284,7 @@
 
             // Saves connection
             connection.save(null, {
-                success: function(model, response) {
+                success: function (model, response) {
                     view.render();
                     view.parent.showMessage('Saved...');
                 }
@@ -1227,15 +1298,15 @@
             this.edit_mode = false;
         },
 
-        validateConnection: function(connection) {
+        validateConnection: function (connection) {
             var $el = this.$el;
             var result = true;
             var values = ['location', 'service', 'worker', 'day_of_week', 'time_from', 'time_to'];
 
-            jQuery.each(values, function(index, element) {
+            jQuery.each(values, function (index, element) {
                 var current = connection.get(element);
 
-                if ( current != '' && current != null ) {
+                if (current != '' && current != null) {
                     return;
                 }
 
@@ -1243,7 +1314,7 @@
 
                 elementField.css({border: '2px solid #ff0000'}).animate({
                     backgroundColor: 'white'
-                }, 2000, function() {
+                }, 2000, function () {
                     elementField.css({border: '1px solid #ccc'});
                 });
 
@@ -1254,23 +1325,23 @@
             // valide select time of day
             if (result) {
                 var time_from = parseInt(connection.get('time_from').replace(':', ''));
-                var time_to   = parseInt(connection.get('time_to').replace(':', ''));
+                var time_to = parseInt(connection.get('time_to').replace(':', ''));
 
                 console.log(time_from, time_to);
 
                 if (time_from > time_to) {
                     var fromField = $el.find('[data-prop="time_from"]');
-                    var toField   = $el.find('[data-prop="time_to"]');
+                    var toField = $el.find('[data-prop="time_to"]');
 
                     fromField.css({border: '2px solid #ff0000'}).animate({
                         backgroundColor: 'white'
-                    }, 2000, function() {
+                    }, 2000, function () {
                         fromField.css({border: '1px solid #ccc'});
                     });
 
                     toField.css({border: '2px solid #ff0000'}).animate({
                         backgroundColor: 'white'
-                    }, 2000, function() {
+                    }, 2000, function () {
                         toField.css({border: '1px solid #ccc'});
                     });
 
@@ -1289,16 +1360,16 @@
             clone.unset('id');
 
             clone.save(null, {
-                success: function(model, response) {
+                success: function (model, response) {
 
-                    connection.collection.fetch( {reset:true} );
+                    connection.collection.fetch({reset: true});
                 }
             });
         },
 
-        cancel: function() {
+        cancel: function () {
             // If is new remove model/view
-            if(this.model.isNew()) {
+            if (this.model.isNew()) {
                 this.parent.showMessage('New canceled');
 
                 this.model.destroy();
@@ -1316,52 +1387,53 @@
         },
 
         // Delets model and view
-        removeItem: function() {
+        removeItem: function () {
             var view = this;
 
-            if(confirm('Are you sure?')) {
+            if (confirm('Are you sure?')) {
                 view.parent.showMessage('Deleting...');
 
                 this.model.destroy({
-                    success: function(model, response) {
+                    success: function (model, response) {
                         view.remove();
                         view.parent.showMessage('Done...');
                     },
-                    error: function(model, response) {
+                    error: function (model, response) {
                         view.parent.showMessage('Error...');
                     }
                 });
             }
         },
 
-        setData: function(locations, services, workers) {
+        setData: function (locations, services, workers) {
             this.locations = locations;
-            this.services  = services;
-            this.workers   = workers;
+            this.services = services;
+            this.workers = workers;
         },
 
         //
-        keydownEvent: function(e) {
+        keydownEvent: function (e) {
             switch (e.which) {
                 // esc
                 case 27 :
                     this.cancel();
-                break;
+                    break;
             }
         }
-    });    /**
+    });
+    /**
      * Bulk component
      */
     EA.ConnectionBulkView = Backbone.View.extend({
-        tagName:  "div",
+        tagName: "div",
 
         // edit template
-        template_edit : _.template( jQuery("#ea-tpl-connection-bulk").html() ),
-        template_bulk_connections: _.template( jQuery("#ea-tpl-single-bulk-connection").html() ),
+        template_edit: _.template(jQuery("#ea-tpl-connection-bulk").html()),
+        template_bulk_connections: _.template(jQuery("#ea-tpl-single-bulk-connection").html()),
 
-        locations : null,
-        services : null,
-        workers : null,
+        locations: null,
+        services: null,
+        workers: null,
 
         connections: [],
 
@@ -1379,18 +1451,18 @@
             var self = this;
 
             //after save split days of week
-            if(!jQuery.isArray(this.model.get('day_of_week'))) {
+            if (!jQuery.isArray(this.model.get('day_of_week'))) {
                 this.model.set('day_of_week', this.model.get('day_of_week').split(','));
             }
 
-            var renderedContent = this.template( {
-                row       : this.model.toJSON(),
-                locations : self.locations.toJSON(),
-                services  : self.services.toJSON(),
-                workers   : self.workers.toJSON()
-            } );
+            var renderedContent = this.template({
+                row: this.model.toJSON(),
+                locations: self.locations.toJSON(),
+                services: self.services.toJSON(),
+                workers: self.workers.toJSON()
+            });
 
-            jQuery(this.el).html( renderedContent );
+            jQuery(this.el).html(renderedContent);
 
             return this;
         },
@@ -1400,7 +1472,7 @@
          *
          * @returns {number}
          */
-        connectionsCount: function() {
+        connectionsCount: function () {
             var values = ['location', 'service', 'worker'];
 
             var locations = this.$el.find('[data-prop="location"]').val();
@@ -1417,7 +1489,7 @@
         /**
          *
          */
-        processConnections: function() {
+        processConnections: function () {
             var locations = this.$el.find('[data-prop="location"]').val();
             var services = this.$el.find('[data-prop="service"]').val();
             var workers = this.$el.find('[data-prop="worker"]').val();
@@ -1436,20 +1508,20 @@
 
             var connections = [];
 
-            jQuery.each(locations, function(i, location) {
-                jQuery.each(services, function(j, service) {
-                    jQuery.each(workers, function(k, worker) {
+            jQuery.each(locations, function (i, location) {
+                jQuery.each(services, function (j, service) {
+                    jQuery.each(workers, function (k, worker) {
                         var model = new EA.Connection({
-                            group_id : nextId,
-                            location : location,
-                            service : service,
-                            worker : worker,
-                            day_of_week : day_of_week,
-                            time_from : time_from,
-                            time_to : time_to,
-                            day_from : day_from,
-                            day_to : day_to,
-                            is_working : is_working
+                            group_id: nextId,
+                            location: location,
+                            service: service,
+                            worker: worker,
+                            day_of_week: day_of_week,
+                            time_from: time_from,
+                            time_to: time_to,
+                            day_from: day_from,
+                            day_to: day_to,
+                            is_working: is_working
                         });
 
                         connections.push(model);
@@ -1460,7 +1532,7 @@
             return connections;
         },
 
-        removeButtonClick: function(e) {
+        removeButtonClick: function (e) {
             var element = jQuery(e.target);
 
             var connection = element.data('model');
@@ -1469,9 +1541,9 @@
             element.closest('li').remove();
         },
 
-        removeConnection: function(connection) {
+        removeConnection: function (connection) {
             var self = this;
-            jQuery.each(this.connections, function(i, current) {
+            jQuery.each(this.connections, function (i, current) {
                 if (current == connection) {
                     self.connections.splice(i, 1);
                 }
@@ -1483,16 +1555,16 @@
         /**
          * Update html element
          */
-        updateConnectionsCount: function(number) {
+        updateConnectionsCount: function (number) {
             this.$el.find('#bulk-connection-count').text(number);
         },
 
         /**
          * Edit state
          */
-        edit: function() {
+        edit: function () {
 
-            if(this.edit_mode) {
+            if (this.edit_mode) {
                 return;
             }
 
@@ -1524,14 +1596,14 @@
             this.$el.find('.chosen-select').chosen({
                 placeholder_text_multiple: ' ',
                 width: '100%'
-            }).change(function() {
+            }).change(function () {
                 var num = plugin.connectionsCount();
                 plugin.updateConnectionsCount(num);
             });
 
         },
 
-        bulkNext: function(e) {
+        bulkNext: function (e) {
             e.preventDefault();
 
             var self = this;
@@ -1543,12 +1615,12 @@
             this.connections = this.processConnections();
             var list = this.$el.find('#bulk-connections');
 
-            jQuery.each(this.connections, function(i, model) {
-                var renderedContent = self.template_bulk_connections( {
-                    row       : model.toJSON(),
-                    locations : self.locations.toJSON(),
-                    services  : self.services.toJSON(),
-                    workers   : self.workers.toJSON()
+            jQuery.each(this.connections, function (i, model) {
+                var renderedContent = self.template_bulk_connections({
+                    row: model.toJSON(),
+                    locations: self.locations.toJSON(),
+                    services: self.services.toJSON(),
+                    workers: self.workers.toJSON()
                 });
 
                 var content = jQuery(renderedContent);
@@ -1568,7 +1640,7 @@
             this.$el.find('#bulk-save').prop('disabled', false);
         },
 
-        save: function(e) {
+        save: function (e) {
             jQuery(e.target).prop('disabled', true);
 
             var self = this;
@@ -1584,7 +1656,7 @@
                 return;
             }
 
-            connection.save().then(function() {
+            connection.save().then(function () {
                 self.removeConnection(connection);
                 self.$el.find('#bulk-connections').children().first().remove();
                 self.updateConnectionsCount(self.connections.length);
@@ -1592,12 +1664,12 @@
             });
         },
 
-        validateConnection: function(connection) {
+        validateConnection: function (connection) {
             var $el = this.$el;
             var result = true;
             var values = ['location', 'service', 'worker', 'day_of_week', 'time_from', 'time_to'];
 
-            jQuery.each(values, function(index, element) {
+            jQuery.each(values, function (index, element) {
                 var elementField = $el.find('[data-prop="' + element + '"]');
 
                 if (elementField.hasClass('chosen-select')) {
@@ -1617,7 +1689,7 @@
 
                 elementField.css({border: '1px solid #ff0000'}).animate({
                     backgroundColor: 'white'
-                }, 2000, function() {
+                }, 2000, function () {
                     elementField.css({border: '1px solid #aaa'});
                 });
 
@@ -1628,21 +1700,21 @@
             // valide select time of day
             if (result) {
                 var time_from = parseInt($el.find('[data-prop="time_from"]').val().replace(':', ''));
-                var time_to   = parseInt($el.find('[data-prop="time_to"]').val().replace(':', ''));
+                var time_to = parseInt($el.find('[data-prop="time_to"]').val().replace(':', ''));
 
                 if (time_from > time_to) {
                     var fromField = $el.find('[data-prop="time_from"]');
-                    var toField   = $el.find('[data-prop="time_to"]');
+                    var toField = $el.find('[data-prop="time_to"]');
 
                     fromField.css({border: '1px solid #ff0000'}).animate({
                         backgroundColor: 'white'
-                    }, 2000, function() {
+                    }, 2000, function () {
                         fromField.css({border: '1px solid #aaa'});
                     });
 
                     toField.css({border: '1px solid #ff0000'}).animate({
                         backgroundColor: 'white'
-                    }, 2000, function() {
+                    }, 2000, function () {
                         toField.css({border: '1px solid #aaa'});
                     });
 
@@ -1653,48 +1725,48 @@
             return result;
         },
 
-        setData: function(locations, services, workers) {
+        setData: function (locations, services, workers) {
             this.locations = locations;
-            this.services  = services;
-            this.workers   = workers;
+            this.services = services;
+            this.workers = workers;
         }
     });    // Main tamplate
     EA.ConnectionsView = Backbone.View.extend({
 
-        template : _.template( jQuery("#ea-tpl-connections-table").html() ),
+        template: _.template(jQuery("#ea-tpl-connections-table").html()),
 
-        rowsView : null,
+        rowsView: null,
 
-        events : {
-            "click .add-new" : "addNew",
+        events: {
+            "click .add-new": "addNew",
             "click .add-new-bulk": "addBulk",
-            "click .refresh-list" : "refreshList"
+            "click .refresh-list": "refreshList"
         },
 
-        locations : null,
-        services : null,
-        workers : null,
+        locations: null,
+        services: null,
+        workers: null,
 
         initialize: function () {
             // bug fix for missing regional settings
             // jQuery.datepicker.setDefaults( jQuery.datepicker.regional[ea_settings.datepicker] );
             if (typeof jQuery.timepicker.regional[ea_settings.datepicker] !== 'undefined') {
-                jQuery.timepicker.setDefaults( jQuery.timepicker.regional[ea_settings.datepicker] );
+                jQuery.timepicker.setDefaults(jQuery.timepicker.regional[ea_settings.datepicker]);
             }
 
             // Empty array of connections
             this.collection = new EA.Connections();
 
-            if(typeof eaData !== 'undefined'){
+            if (typeof eaData !== 'undefined') {
                 // In page cache
-                this.locations  = new EA.Locations(eaData.Locations);
-                this.services   = new EA.Services(eaData.Services);
-                this.workers    = new EA.Workers(eaData.Workers);
+                this.locations = new EA.Locations(eaData.Locations);
+                this.services = new EA.Services(eaData.Services);
+                this.workers = new EA.Workers(eaData.Workers);
             } else {
                 // Get from server
-                this.locations  = new EA.Locations();
-                this.services   = new EA.Services();
-                this.workers    = new EA.Workers();
+                this.locations = new EA.Locations();
+                this.services = new EA.Services();
+                this.workers = new EA.Workers();
 
                 this.locations.fetch();
                 this.services.fetch();
@@ -1709,22 +1781,22 @@
 
             this.showMessage('Table loading...', true);
             // Get data from server
-            this.collection.fetch( {reset:true}, {
-                success : function () {
+            this.collection.fetch({reset: true}, {
+                success: function () {
                     this.showMessage('Loading table...');
                 }
-            } );
+            });
         },
 
         render: function () {
 
             this.$el.empty(); // clear the element to make sure you don't double your contact view
 
-            this.$el.html( this.template );
+            this.$el.html(this.template);
 
             var self = this; // so you can use this inside the each function
 
-            this.collection.each(function(connection) { // iterate through the collection
+            this.collection.each(function (connection) { // iterate through the collection
                 var connectionView = new EA.ConnectionView({
                     model: connection,
                     parent: self
@@ -1744,7 +1816,7 @@
             return this;
         },
 
-        addNew: function(e) {
+        addNew: function (e) {
             e.preventDefault();
 
             var connection = new EA.Connection();
@@ -1768,12 +1840,12 @@
             connectionView.edit();
         },
 
-        getMax: function() {
+        getMax: function () {
             if (this.collection.length === 0) {
                 return 0;
             }
 
-            var maxModel = _.max(this.collection.toJSON(), function(model) {
+            var maxModel = _.max(this.collection.toJSON(), function (model) {
 
                 return model.id;
             });
@@ -1781,7 +1853,7 @@
             return parseInt(maxModel.id);
         },
 
-        addBulk: function(e) {
+        addBulk: function (e) {
             e.preventDefault();
 
             var self = this;
@@ -1806,23 +1878,23 @@
             tb_show('Bulk Connections builder', '#TB_inline?height=420&width=900&inlineId=bulk-connections-builder');
         },
 
-        refreshList: function(e) {
+        refreshList: function (e) {
             e.preventDefault();
 
             this.showMessage('Loading table...', true);
 
-            this.collection.fetch( {reset:true}, {
-                error: function(response){
+            this.collection.fetch({reset: true}, {
+                error: function (response) {
                     that.showMessage('');
                     alert('Error, try refresh again.');
                 },
-                success: function(){
+                success: function () {
                     that.showMessage('');
                 }
             });
         },
 
-        destroy_view: function() {
+        destroy_view: function () {
 
             // COMPLETELY UNBIND THE VIEW
             this.undelegateEvents();
@@ -1835,10 +1907,10 @@
 
         },
 
-        showMessage: function(text, hold) {
+        showMessage: function (text, hold) {
             var onHold = hold || false;
 
-            if(onHold) {
+            if (onHold) {
                 this.$el.find('#status-msg').text(text).show();
             } else {
                 this.$el.find('#status-msg').text(text).show().delay(2000).fadeOut();
@@ -1855,7 +1927,7 @@
      * @returns {*}
      */
     function findWhereSafe(collection, id, returnedParamName) {
-        var result = _.findWhere(collection, {id:id});
+        var result = _.findWhere(collection, {id: id});
 
         if (_.isUndefined(result)) {
             return '-- DELETED --';
@@ -1865,22 +1937,22 @@
     }
 
     _.mixin({
-        findWhereSafe:findWhereSafe
+        findWhereSafe: findWhereSafe
     });    // Main tamplate
     EA.CustumizeView = Backbone.View.extend({
 
-        template : _.template( jQuery("#ea-tpl-custumize").html() ),
-        template_fields : _.template(jQuery("#ea-tpl-custom-forms").html()),
-        template_options : _.template(jQuery("#ea-tpl-custom-form-options").html()),
+        template: _.template(jQuery("#ea-tpl-custumize").html()),
+        template_fields: _.template(jQuery("#ea-tpl-custom-forms").html()),
+        template_options: _.template(jQuery("#ea-tpl-custom-form-options").html()),
 
-        tinymceOn : true,
+        tinymceOn: true,
 
         events: {
-            "click .btn-save-settings" : "saveSettings",
-            "click .btn-add-field" : "addCustomFiled",
-            "click .single-field-options" : "fieldOptions",
-            "click .add-select-option" : "addSelectOption",
-            "click .item-save" : "apply",
+            "click .btn-save-settings": "saveSettings",
+            "click .btn-add-field": "addCustomFiled",
+            "click .single-field-options": "fieldOptions",
+            "click .add-select-option": "addSelectOption",
+            "click .item-save": "apply",
             "click .item-delete": "deleteOption",
             "click .remove-select-option": "removeSelectedOption",
             "click .mail-tab": "selectMailNotification",
@@ -1898,7 +1970,7 @@
             this.fields.comparator = 'position';
 
             // Table draw
-    //      this.render();
+            //      this.render();
 
             var defOptions = jQuery.Deferred();
             var defFields = jQuery.Deferred();
@@ -1913,34 +1985,34 @@
             });
 
             // if there is no data in cache
-            this.collection.fetch( {
-                reset:true,
-                success: function(collection, response, options) {
+            this.collection.fetch({
+                reset: true,
+                success: function (collection, response, options) {
                     defOptions.resolve();
                 }
             });
 
-            this.fields.fetch( {
-                reset:true,
-                success: function(collection, response, options) {
+            this.fields.fetch({
+                reset: true,
+                success: function (collection, response, options) {
                     defFields.resolve();
                 }
-            } );
+            });
         },
 
         render: function () {
             var obj = this;
             this.$el.empty(); // clear the element to make sure you don't double your contact view
 
-            var content = this.template( { settings : this.collection.toJSON() } );
+            var content = this.template({settings: this.collection.toJSON()});
 
-            this.$el.html( content );
+            this.$el.html(content);
 
             this.renderFields();
 
             this.$el.find('#custom-fields').sortable({
                 placeholder: 'sortable-placeholder',
-                update : function(event, ui) {
+                update: function (event, ui) {
                     obj.reorder();
                 }
             });
@@ -1955,34 +2027,34 @@
         /**
          *
          */
-        initTinyMCE: function() {
+        initTinyMCE: function () {
 
             if (typeof tinymce === 'undefined') {
                 this.tinymceOn = false;
                 return;
             }
 
-            tinymce.init( {
-                mode : "exact",
-                elements : 'mail-template',
+            tinymce.init({
+                mode: "exact",
+                elements: 'mail-template',
                 theme: "modern",
                 skin: "lightgray",
-                menubar : false,
-                statusbar : false,
-                relative_urls : false,
-                remove_script_host : false,
+                menubar: false,
+                statusbar: false,
+                relative_urls: false,
+                remove_script_host: false,
                 toolbar: [
                     "bold,italic,alignleft,aligncenter,alignright,bullist,numlist,outdent,indent,undo,redo,link,unlink,code"
                 ],
-                plugins : "wordpress,wplink,paste,-code",
-                paste_auto_cleanup_on_paste : true,
-                paste_postprocess : function( pl, o ) {
-                    o.node.innerHTML = o.node.innerHTML.replace( /&nbsp;+/ig, " " );
+                plugins: "wordpress,wplink,paste,-code",
+                paste_auto_cleanup_on_paste: true,
+                paste_postprocess: function (pl, o) {
+                    o.node.innerHTML = o.node.innerHTML.replace(/&nbsp;+/ig, " ");
                 }
-            } );
+            });
         },
 
-        selectMailNotification: function(event) {
+        selectMailNotification: function (event) {
             // save previous content from tinyMCE
             this.updateMailTemplate();
 
@@ -2003,7 +2075,7 @@
             $newTemplate.addClass('selected');
         },
 
-        updateMailTemplate: function() {
+        updateMailTemplate: function () {
             var prevContent = '';
             var $prevTemplate = this.$el.find('.mail-tab').filter('.selected');
             if (this.tinymceOn) {
@@ -2014,7 +2086,7 @@
             this.$el.find($prevTemplate.data('textarea')).val(prevContent);
         },
 
-        saveSettings: function() {
+        saveSettings: function () {
             this.updateMailTemplate();
 
             var fields = this.$el.find('.field');
@@ -2025,7 +2097,7 @@
             var processed = [];
 
             // update the collection
-            this.collection.each(function(model, index) {
+            this.collection.each(function (model, index) {
                 var key = model.get('ea_key');
 
                 // mark for removing
@@ -2037,17 +2109,17 @@
 
                 var input = fields.filter('[data-key="' + key + '"]');
 
-                if(input.is('[type="checkbox"]')) {
-                    if(input.is(':checked')) {
+                if (input.is('[type="checkbox"]')) {
+                    if (input.is(':checked')) {
                         model.set('ea_value', 1);
                     } else {
                         model.set('ea_value', 0);
                     }
 
-                    model.unset('for_delete', {silent:true});
+                    model.unset('for_delete', {silent: true});
                 } else {
                     model.set('ea_value', input.val());
-                    model.unset('for_delete', {silent:true});
+                    model.unset('for_delete', {silent: true});
                 }
 
                 // mark as processed
@@ -2057,7 +2129,7 @@
             var collectionToBeDeleted = [];
 
             // clear down the section
-            this.collection.each(function(model, index) {
+            this.collection.each(function (model, index) {
 
                 if (model.get('for_delete')) {
                     collectionToBeDeleted.push(model);
@@ -2065,20 +2137,20 @@
 
             });
 
-            this.collection.remove(collectionToBeDeleted, {silent:true});
+            this.collection.remove(collectionToBeDeleted, {silent: true});
 
             var wrapper = new EA.SettingsWrapper({options: this.collection, fields: this.fields});
-            wrapper.save( null, {
-                error: function(response){
+            wrapper.save(null, {
+                error: function (response) {
                     alert('There has been some error. Please try later.');
                 },
-                success: function(){
+                success: function () {
                     alert('Settings saved!');
                 }
             });
         },
 
-        addCustomFiled: function(e) {
+        addCustomFiled: function (e) {
             var obj = this;
             var $btn = jQuery(e.currentTarget);
             var $row = $btn.closest('div');
@@ -2086,14 +2158,14 @@
             var type = $row.find('select').val();
 
             var field = new EA.Field({
-                label:name,
-                type:type,
+                label: name,
+                type: type,
                 position: obj.fields.length + 1
             });
 
             this.fields.add(field);
 
-            var $html = this.template_fields({item : field.toJSON()});
+            var $html = this.template_fields({item: field.toJSON()});
             $ul = this.$el.find('#custom-fields');
             $ul.append($html);
 
@@ -2102,7 +2174,7 @@
             $ul.find('.single-field-options:last').click();
         },
 
-        renderFields: function() {
+        renderFields: function () {
             var obj = this, $ul, tags = [];
 
             $ul = this.$el.find('#custom-fields');
@@ -2111,10 +2183,10 @@
 
             this.fields.sort();
 
-            this.fields.each(function(model, index) {
+            this.fields.each(function (model, index) {
                 var o = model.toJSON();
 
-                var $html = obj.template_fields({item : o});
+                var $html = obj.template_fields({item: o});
                 $ul.append($html);
 
                 tags.push('#' + o.slug + '#');
@@ -2123,7 +2195,7 @@
             this.$el.find('#custom-tags').html(tags.join(', '));
         },
 
-        fieldOptions: function(e) {
+        fieldOptions: function (e) {
             e.preventDefault();
             var $btn = jQuery(e.currentTarget);
             var $li = $btn.closest('li');
@@ -2138,14 +2210,14 @@
                 var o = element.toJSON();
 
                 if (o.type === 'SELECT') {
-                    if (o.mixed !== '' ) {
+                    if (o.mixed !== '') {
                         o.options = o.mixed.split(',');
                     } else {
                         o.options = ['-'];
                     }
                 }
 
-                $html = this.template_options({item:o});
+                $html = this.template_options({item: o});
                 $li.append($html);
 
                 this.$el.find('#custom-fields').sortable('disable');
@@ -2162,29 +2234,29 @@
             return false;
         },
 
-        addSelectOption: function(e) {
+        addSelectOption: function (e) {
             e.preventDefault();
             var $btn = jQuery(e.currentTarget);
             var value = $btn.prevAll('input').val();
             var cont = $btn.closest('.field-settings');
 
-            cont.find('.select-options').append('<li data-element="'+ value + '">'+ value + '<a href="#" class="remove-select-option"><i class="fa fa-trash-o"></i></a></li>');
+            cont.find('.select-options').append('<li data-element="' + value + '">' + value + '<a href="#" class="remove-select-option"><i class="fa fa-trash-o"></i></a></li>');
 
             // delete option
             $btn.prevAll('input').val('');
         },
 
-        apply: function(e) {
+        apply: function (e) {
             e.preventDefault();
 
             var $btn = jQuery(e.currentTarget);
             var $li = $btn.closest('li');
             var name = $li.data('name');
-            var element = this.fields.findWhere({label:name});
+            var element = this.fields.findWhere({label: name});
 
             var options = [];
 
-            $li.find('.select-options > li').each(function(index, el) {
+            $li.find('.select-options > li').each(function (index, el) {
                 options.push(jQuery(el).text().trim());
             });
 
@@ -2202,8 +2274,8 @@
 
             $li.closest('ul').sortable('enable');
 
-            element.save( null, {
-                error: function(response){
+            element.save(null, {
+                error: function (response) {
                     alert('There has been some error.');
                 }
             });
@@ -2212,7 +2284,7 @@
             this.renderFields();
         },
 
-        deleteOption: function(e) {
+        deleteOption: function (e) {
             e.preventDefault();
 
             var obj = this;
@@ -2220,28 +2292,28 @@
             var $btn = jQuery(e.currentTarget);
             var $li = $btn.closest('li');
             var name = $li.data('name');
-            var element = this.fields.findWhere({label:name});
+            var element = this.fields.findWhere({label: name});
 
             this.fields.remove(element);
 
             element.destroy({
-                success: function(model, response) {
+                success: function (model, response) {
                     obj.renderFields();
                 },
-                error: function() {
+                error: function () {
                     alert('Error on delete!');
                 }
             });
         },
 
-        removeSelectedOption: function(e) {
+        removeSelectedOption: function (e) {
             e.preventDefault();
             var $btn = jQuery(e.currentTarget);
 
             $btn.closest('li').remove();
         },
 
-        addAdvanceRedirect: function() {
+        addAdvanceRedirect: function () {
             var $elData = this.$el.find('#advance-redirect');
             var data = JSON.parse($elData.val());
 
@@ -2261,7 +2333,7 @@
             this.showCustomRedirects();
         },
 
-        removeAdvanceRedirect: function(e) {
+        removeAdvanceRedirect: function (e) {
             var $btn = jQuery(e.currentTarget);
             var index = $btn.data('index');
 
@@ -2275,7 +2347,7 @@
             this.showCustomRedirects();
         },
 
-        showCustomRedirects: function() {
+        showCustomRedirects: function () {
             var $list = this.$el.find('#custom-redirect-list');
             var $ulData = this.$el.find('#advance-redirect');
             var data = JSON.parse($ulData.val());
@@ -2286,9 +2358,9 @@
 
             $list.empty();
 
-            jQuery.each(data, function(index, element) {
-                var service = eaData.Services.find(function(el) {
-                   return el.id === element.service;
+            jQuery.each(data, function (index, element) {
+                var service = eaData.Services.find(function (el) {
+                    return el.id === element.service;
                 });
 
                 if (!service) {
@@ -2297,11 +2369,11 @@
                     };
                 }
 
-                $list.append('<div class="list-item redirect-row"><span class="row-no">' + (index+1) + '.</span><span class="redirect-service-name">' + service.name + '</span><span class="redirect-url">' + element.url + '</span><button data-index="' + index + '" class="button button-primary remove-advance-redirect"> X </button></div>');
+                $list.append('<div class="list-item redirect-row"><span class="row-no">' + (index + 1) + '.</span><span class="redirect-service-name">' + service.name + '</span><span class="redirect-url">' + element.url + '</span><button data-index="' + index + '" class="button button-primary remove-advance-redirect"> X </button></div>');
             });
         },
 
-        reorder: function() {
+        reorder: function () {
             var obj = this;
             var $ul = this.$el.find('#custom-fields');
 
@@ -2309,15 +2381,15 @@
 
             var count = 1;
 
-            $lis.each(function(index, el) {
+            $lis.each(function (index, el) {
                 var name = jQuery(el).data('name');
-                var element = obj.fields.findWhere({label:name});
+                var element = obj.fields.findWhere({label: name});
 
                 element.set('position', count++);
             });
         },
 
-        destroy_view: function() {
+        destroy_view: function () {
             tinymce.remove('#mail-template');
 
             // COMPLETELY UNBIND THE VIEW
@@ -2351,12 +2423,12 @@
     });    // Main tamplate
     EA.ToolsView = Backbone.View.extend({
 
-        template : _.template( jQuery("#ea-tpl-tools").html() ),
-        template_error_log : _.template( jQuery("#ea-tpl-tools-log").text() ),
+        template: _.template(jQuery("#ea-tpl-tools").html()),
+        template_error_log: _.template(jQuery("#ea-tpl-tools-log").text()),
 
         events: {
-            "click #test-wp-mail" : "testWPMail",
-            "click #test-mail" : "testMail"
+            "click #test-wp-mail": "testWPMail",
+            "click #test-mail": "testMail"
         },
 
         initialize: function () {
@@ -2367,40 +2439,40 @@
 
             this.errors.bind("reset", this.renderLog, this);
 
-            this.errors.fetch({reset:true});
+            this.errors.fetch({reset: true});
         },
 
         render: function () {
             var obj = this;
             this.$el.empty(); // clear the element to make sure you don't double your contact view
 
-            var content = this.template( {} );
+            var content = this.template({});
 
-            this.$el.html( content );
+            this.$el.html(content);
 
             return this;
         },
 
-        testWPMail: function() {
+        testWPMail: function () {
             var data = {
                 action: 'ea_test_wp_mail',
                 address: jQuery('#test-email-address').val(),
                 native: 0
             };
 
-            jQuery.post(ajaxurl, data, function(response) {
+            jQuery.post(ajaxurl, data, function (response) {
                 alert(response);
             });
         },
 
-        testMail: function() {
+        testMail: function () {
             var data = {
                 action: 'ea_test_wp_mail',
                 address: jQuery('#test-email-address').val(),
                 native: 1
             };
 
-            jQuery.post(ajaxurl, data, function(response) {
+            jQuery.post(ajaxurl, data, function (response) {
                 alert(response);
             });
         },
@@ -2411,16 +2483,16 @@
         renderLog: function () {
             var obj = this, content = '';
 
-            this.errors.each(function(model, index) {
+            this.errors.each(function (model, index) {
                 var o = model.toJSON();
 
-                content += obj.template_error_log({item : o});
+                content += obj.template_error_log({item: o});
             });
 
             this.$el.find('#ea-error-log').val(content);
         },
 
-        destroy_view: function() {
+        destroy_view: function () {
 
             // COMPLETELY UNBIND THE VIEW
             this.undelegateEvents();
@@ -2431,18 +2503,19 @@
             this.remove();
             Backbone.View.prototype.remove.call(this);
         }
-    });    /**
+    });
+    /**
      * Main Admin View
      * Renders Admin tab panel
      *
      **/
     EA.MainView = Backbone.View.extend({
-        el : jQuery('#wpbody-content'),
+        el: jQuery('#wpbody-content'),
 
-        template : _.template( jQuery("#ea-settings-main").html() ),
+        template: _.template(jQuery("#ea-settings-main").html()),
 
-        events : {
-            "click #tab-header li a" : "select"
+        events: {
+            "click #tab-header li a": "select"
         },
 
         initialize: function () {
@@ -2455,24 +2528,24 @@
 
             this.$el.empty();
 
-            this.$el.html( this.template );
+            this.$el.html(this.template);
 
             return this;
         },
 
         addContainer: function () {
 
-            if( this.$el.find('#tab-content').length > 0 ) {
+            if (this.$el.find('#tab-content').length > 0) {
                 return;
             }
 
             this.$el.children('.wrap').append(
-                jQuery( document.createElement('div') )
-                    .attr( 'id', 'tab-content' )
+                jQuery(document.createElement('div'))
+                    .attr('id', 'tab-content')
             );
         },
 
-        select: function(e) {
+        select: function (e) {
             // console.log(e);
             var element = jQuery(e.target);
 
@@ -2481,8 +2554,8 @@
             element.parents('li:first').addClass('tab-selected');
         },
 
-        selectHash: function(hash) {
-            if(hash === '') {
+        selectHash: function (hash) {
+            if (hash === '') {
                 hash = '#locations/';
             }
 
@@ -2491,117 +2564,117 @@
     });
     var mainView = new EA.MainView();
 
-	EA.AppRouter = Backbone.Router.extend({
-	    current: null,
-	    routes: {
-	    	"custumize":"custumize",
-	        "staff/": "staff",
-	        "services/": "services",
-	        "connection/": "connections",
-	        "locations/": "location",
-	        "custumize/": "custumize",
-	        "tools/": "tools",
-	        "": 'location'
-	    },
+    EA.AppRouter = Backbone.Router.extend({
+        current: null,
+        routes: {
+            "custumize": "custumize",
+            "staff/": "staff",
+            "services/": "services",
+            "connection/": "connections",
+            "locations/": "location",
+            "custumize/": "custumize",
+            "tools/": "tools",
+            "": 'location'
+        },
 
-	    initialize: function () {
-	        var currentHash = window.location.hash;
+        initialize: function () {
+            var currentHash = window.location.hash;
 
-	        mainView.selectHash(currentHash);
-	    },
+            mainView.selectHash(currentHash);
+        },
 
-	    clearState : function() {
-	        if(this.current != null) {
-	            this.current.destroy_view();
+        clearState: function () {
+            if (this.current != null) {
+                this.current.destroy_view();
 
-	            // FIX
-	            mainView.addContainer();
-	        }
-	    },
-	    setState: function(newState) {
-	    	this.current = newState;
-	        // FIX back/forward navigation
-	        var hash = window.location.hash;
+                // FIX
+                mainView.addContainer();
+            }
+        },
+        setState: function (newState) {
+            this.current = newState;
+            // FIX back/forward navigation
+            var hash = window.location.hash;
 
-	        if(hash === '') {
-	            hash = '#locations/';
-	        }
+            if (hash === '') {
+                hash = '#locations/';
+            }
 
-	        var tab = mainView.$el.find('[href="' + hash + '"]')[0];
+            var tab = mainView.$el.find('[href="' + hash + '"]')[0];
 
-	        mainView.select({ target : tab});
+            mainView.select({target: tab});
 
-	    }
-	});
+        }
+    });
 
-	// Instantiate the router
-	var app_router = new EA.AppRouter;
+    // Instantiate the router
+    var app_router = new EA.AppRouter;
 
-	// Services
-	app_router.on('route:services', function () {
-	    this.clearState();
+    // Services
+    app_router.on('route:services', function () {
+        this.clearState();
 
-	    var services = new EA.ServicesView({
-	        el: '#tab-content'
-	    });
+        var services = new EA.ServicesView({
+            el: '#tab-content'
+        });
 
-	    this.setState(services);
-	});
+        this.setState(services);
+    });
 
-	// Locations
-	app_router.on('route:location', function () {
-	    this.clearState();
+    // Locations
+    app_router.on('route:location', function () {
+        this.clearState();
 
-	    var locations = new EA.LocationsView({
-	        el: '#tab-content'
-	    });
+        var locations = new EA.LocationsView({
+            el: '#tab-content'
+        });
 
-	    this.setState(locations);
-	});
+        this.setState(locations);
+    });
 
-	// Staff
-	app_router.on('route:staff', function () {
-	    this.clearState();
+    // Staff
+    app_router.on('route:staff', function () {
+        this.clearState();
 
-	    var staff = new EA.StaffView({
-	        el: '#tab-content'
-	    });
+        var staff = new EA.StaffView({
+            el: '#tab-content'
+        });
 
-	    this.setState(staff);
-	});
+        this.setState(staff);
+    });
 
-	// Connections
-	app_router.on('route:connections', function () {
-	    this.clearState();
+    // Connections
+    app_router.on('route:connections', function () {
+        this.clearState();
 
-	    var connections = new EA.ConnectionsView({
-	        el: '#tab-content'
-	    });
+        var connections = new EA.ConnectionsView({
+            el: '#tab-content'
+        });
 
-	    this.setState(connections);
-	});
+        this.setState(connections);
+    });
 
-	// Customize
-	app_router.on('route:custumize', function () {
-	    this.clearState();
+    // Customize
+    app_router.on('route:custumize', function () {
+        this.clearState();
 
-	    var custumize = new EA.CustumizeView({
-	        el: '#tab-content'
-	    });
+        var custumize = new EA.CustumizeView({
+            el: '#tab-content'
+        });
 
-	    this.setState(custumize);
-	});
+        this.setState(custumize);
+    });
 
-	app_router.on('route:tools', function () {
-	    this.clearState();
+    app_router.on('route:tools', function () {
+        this.clearState();
 
-	    var custumize = new EA.ToolsView({
-	        el: '#tab-content'
-	    });
+        var custumize = new EA.ToolsView({
+            el: '#tab-content'
+        });
 
-	    this.setState(custumize);
-	});
+        this.setState(custumize);
+    });
 
-	// Start Backbone history a necessary step for bookmarkable URL's
-	Backbone.history.start();
+    // Start Backbone history a necessary step for bookmarkable URL's
+    Backbone.history.start();
 }(jQuery));

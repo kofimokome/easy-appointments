@@ -83,7 +83,8 @@ class EATableColumns
                 'name',
                 'description',
                 'email',
-                'phone'
+                'phone',
+                'photo'
             )
         );
 

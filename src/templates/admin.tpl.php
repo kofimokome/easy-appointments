@@ -230,6 +230,7 @@
             <th class="manage-column column-title"><?php _e('Description', 'easy-appointments'); ?></th>
             <th class="manage-column column-title"><?php _e('Email', 'easy-appointments'); ?></th>
             <th class="manage-column column-title"><?php _e('Phone', 'easy-appointments'); ?></th>
+            <th class="manage-column column-title"><?php _e('Photo', 'easy-appointments'); ?></th>
             <th class="manage-column column-title column-15"><?php _e('Actions', 'easy-appointments'); ?></th>
         </tr>
         </thead>
@@ -255,6 +256,9 @@
 		<strong><%= _.escape( row.phone ) %></strong>
 	</td>
 	<td>
+        <img width="50px" height="50px" src="<%= _.escape( row.photo ) %>" alt="">
+	</td>
+	<td>
 		<button class="button btn-edit"><?php _e('Edit','easy-appointments');?></button>
 		<button class="button btn-del"><?php _e('Delete','easy-appointments');?></button>
 	</td>
@@ -266,6 +270,11 @@
 	<td><input type="text" data-prop="description" value="<%= _.escape( row.description ) %>"></td>
 	<td><input type="text" data-prop="email" value="<%= _.escape( row.email ) %>"></td>
 	<td><input type="text" data-prop="phone" value="<%= _.escape( row.phone ) %>"></td>
+	<td>
+        <input id="km-photo" type="hidden" data-prop="photo" value="<%= _.escape( row.photo ) %>" readonly>
+        <button class="button button-primary" id="btn-photo">Select Image</button>
+        <button class="button button-default" id="btn-photo-remove">Remove Image</button>
+    </td>
 	<td>
 		<button class="button button-primary btn-save"><?php _e('Save','easy-appointments');?></button>
 		<button class="button btn-cancel"><?php _e('Cancel','easy-appointments');?></button>
