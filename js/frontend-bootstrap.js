@@ -374,7 +374,7 @@
 
                     var name = element.name;
                     if (options.next === 'worker') {
-                        var card = '<div class="col-sm-6 col-md-6" id="km-doctor-' + element.id + '" style="cursor: pointer">' +
+                        var card = '<div class="col-md-6 col-xs-5" id="km-doctor-' + element.id + '" style="cursor: pointer">' +
                             '                            <div class="thumbnail">' +
                             '                                <img src="' + element.photo + '" alt="' + element.name + '">' +
                             '                                <div class="caption">' +

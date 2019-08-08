@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Easy Appointments
+ * Plugin Name: Easy Appointments (!!!PLEASE DO NOT UPDATE !!! )
  * Plugin URI: https://easy-appointments.net/
  * Description: Simple and easy to use management system for Appointments and Bookings. !!!!PLEASE DO NOT UPDATE!!!!
  * Version: 2.5.6
