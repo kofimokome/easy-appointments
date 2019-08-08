@@ -364,15 +364,19 @@
             this.placeLoader(next_element.parent());
 
             var req = jQuery.get(ea_ajaxurl, options, function (response) {
+
                 next_element.empty();
 
                 // default
                 next_element.append('<option value="">-</option>');
 
+                $("#km-doctors").empty();
+
                 // options
                 jQuery.each(response, function (index, element) {
 
                     var name = element.name;
+                    console.log(options.next);
                     if (options.next === 'worker') {
                         var card = '<div class="col-md-6 col-xs-5" id="km-doctor-' + element.id + '" style="cursor: pointer">' +
                             '                            <div class="thumbnail">' +
@@ -388,9 +392,9 @@
                             e.preventDefault();
                             $("#km-worker").val(element.id).trigger('change');
                         });
-                    } else {
-                        $("#km-doctors").empty();
+
                     }
+
                     var $option = jQuery('<option value="' + element.id + '">' + name + '</option>');
                     if ('price' in element && ea_settings['price.hide'] !== '1') {
                         // see if currency is before price or now
