@@ -38,8 +38,8 @@ class EAFrontend
      */
     function __construct($models, $options, $datetime)
     {
-        $this->options  = $options;
-        $this->models   = $models;
+        $this->options = $options;
+        $this->models = $models;
         $this->datetime = $datetime;
     }
 
@@ -185,14 +185,14 @@ class EAFrontend
     public function standard_app($atts)
     {
         $code_params = shortcode_atts(array(
-            'scroll_off'           => false,
-            'save_form_content'    => true,
-            'start_of_week'        => get_option('start_of_week', 0),
-            'default_date'         => date('Y-m-d'),
-            'min_date'             => null,
-            'max_date'             => null,
+            'scroll_off' => false,
+            'save_form_content' => true,
+            'start_of_week' => get_option('start_of_week', 0),
+            'default_date' => date('Y-m-d'),
+            'min_date' => null,
+            'max_date' => null,
             'show_remaining_slots' => '0',
-            'show_week'            => '0',
+            'show_week' => '0',
         ), $atts);
 
         $settings = $this->options->get_options();
@@ -202,14 +202,14 @@ class EAFrontend
 
         $settings['check'] = wp_create_nonce('ea-bootstrap-form');
 
-        $settings['scroll_off']           = $code_params['scroll_off'];
-        $settings['start_of_week']        = $code_params['start_of_week'];
-        $settings['default_date']         = $code_params['default_date'];
-        $settings['min_date']             = $code_params['min_date'];
-        $settings['max_date']             = $code_params['max_date'];
+        $settings['scroll_off'] = $code_params['scroll_off'];
+        $settings['start_of_week'] = $code_params['start_of_week'];
+        $settings['default_date'] = $code_params['default_date'];
+        $settings['min_date'] = $code_params['min_date'];
+        $settings['max_date'] = $code_params['max_date'];
         $settings['show_remaining_slots'] = $code_params['show_remaining_slots'];
-        $settings['save_form_content']    = $code_params['save_form_content'];
-        $settings['show_week']            = $code_params['show_week'];
+        $settings['save_form_content'] = $code_params['save_form_content'];
+        $settings['show_week'] = $code_params['show_week'];
 
         $settings['trans.please-select-new-date'] = __('Please select another day', 'easy-appointments');
         $settings['trans.date-time'] = __('Date & time', 'easy-appointments');
@@ -249,7 +249,7 @@ class EAFrontend
         $custom_form = $this->generate_custom_fields($meta);
 
         // add custom CSS
-        wp_add_inline_style( 'ea-frontend-style', $customCss );
+        wp_add_inline_style('ea-frontend-style', $customCss);
 
         ob_start();
 
@@ -265,19 +265,19 @@ class EAFrontend
                 <div class="step">
                     <div class="block"></div>
                     <label class="ea-label"><?php _e($this->options->get_option_value("trans.location"), 'easy-appointments') ?></label><select
-                        name="location" data-c="location"
-                        class="filter"><?php $this->get_options("locations") ?></select>
+                            name="location" data-c="location"
+                            class="filter"><?php $this->get_options("locations") ?></select>
                 </div>
                 <div class="step">
                     <div class="block"></div>
                     <label class="ea-label"><?php _e($this->options->get_option_value("trans.service"), 'easy-appointments') ?></label><select
-                        name="service" data-c="service" class="filter"
-                        data-currency="<?php echo $this->options->get_option_value("trans.currency") ?>"><?php $this->get_options("services") ?></select>
+                            name="service" data-c="service" class="filter"
+                            data-currency="<?php echo $this->options->get_option_value("trans.currency") ?>"><?php $this->get_options("services") ?></select>
                 </div>
                 <div class="step">
                     <div class="block"></div>
                     <label class="ea-label"><?php _e($this->options->get_option_value("trans.worker"), 'easy-appointments') ?></label><select
-                        name="worker" data-c="worker" class="filter"><?php $this->get_options("staff") ?></select>
+                            name="worker" data-c="worker" class="filter"><?php $this->get_options("staff") ?></select>
                 </div>
                 <div class="step calendar" class="filter">
                     <div class="block"></div>
@@ -299,7 +299,8 @@ class EAFrontend
                     <?php if (!empty($settings['show.iagree'])) : ?>
                         <p>
                             <label
-                                style="font-size: 65%; width: 80%;" class="i-agree"><?php _e('I agree with terms and conditions', 'easy-appointments'); ?>
+                                    style="font-size: 65%; width: 80%;"
+                                    class="i-agree"><?php _e('I agree with terms and conditions', 'easy-appointments'); ?>
                                 * : </label><input style="width: 15%;" type="checkbox" name="iagree"
                                                    data-rule-required="true"
                                                    data-msg-required="<?php _e('You must agree with terms and conditions', 'easy-appointments'); ?>">
@@ -309,16 +310,18 @@ class EAFrontend
                     <?php if (!empty($settings['gdpr.on'])) : ?>
                         <p>
                             <label
-                                    style="font-size: 65%; width: 80%;" class="gdpr"><?php echo $settings['gdpr.label'];?>
+                                    style="font-size: 65%; width: 80%;"
+                                    class="gdpr"><?php echo $settings['gdpr.label']; ?>
                                 * : </label><input style="width: 15%;" type="checkbox" name="iagree"
                                                    data-rule-required="true"
-                                                   data-msg-required="<?php echo $settings['gdpr.message'];?>">
+                                                   data-msg-required="<?php echo $settings['gdpr.message']; ?>">
                         </p>
                         <br>
                     <?php endif; ?>
 
                     <?php if (!empty($settings['captcha.site-key'])) : ?>
-                        <div style="width: 100%" class="g-recaptcha" data-sitekey="<?php echo $settings['captcha.site-key'];?>"></div><br>
+                        <div style="width: 100%" class="g-recaptcha"
+                             data-sitekey="<?php echo $settings['captcha.site-key']; ?>"></div><br>
                     <?php endif; ?>
 
                     <div style="display: inline-flex;">
@@ -409,20 +412,20 @@ class EAFrontend
     {
 
         $code_params = shortcode_atts(array(
-            'location'             => null,
-            'service'              => null,
-            'worker'               => null,
-            'width'                => '400px',
-            'scroll_off'           => false,
-            'save_form_content'    => true,
-            'layout_cols'          => '1',
-            'start_of_week'        => get_option('start_of_week', 0),
-            'rtl'                  => '0',
-            'default_date'         => date('Y-m-d'),
-            'min_date'             => null,
-            'max_date'             => null,
+            'location' => null,
+            'service' => null,
+            'worker' => null,
+            'width' => '400px',
+            'scroll_off' => false,
+            'save_form_content' => true,
+            'layout_cols' => '1',
+            'start_of_week' => get_option('start_of_week', 0),
+            'rtl' => '0',
+            'default_date' => date('Y-m-d'),
+            'min_date' => null,
+            'max_date' => null,
             'show_remaining_slots' => '0',
-            'show_week'            => '0'
+            'show_week' => '0'
         ), $atts);
 
         // check params
@@ -430,8 +433,8 @@ class EAFrontend
 
         // used inside template ea_bootstrap.tpl.php
         $location_id = $code_params['location'];
-        $service_id  = $code_params['service'];
-        $worker_id   = $code_params['worker'];
+        $service_id = $code_params['service'];
+        $worker_id = $code_params['worker'];
 
         $settings = $this->options->get_options();
 
@@ -440,17 +443,17 @@ class EAFrontend
 
         $settings['check'] = wp_create_nonce('ea-bootstrap-form');
 
-        $settings['width']                 = $code_params['width'];
-        $settings['scroll_off']            = $code_params['scroll_off'];
-        $settings['layout_cols']           = $code_params['layout_cols'];
-        $settings['start_of_week']         = $code_params['start_of_week'];
-        $settings['rtl']                   = $code_params['rtl'];
-        $settings['default_date']          = $code_params['default_date'];
-        $settings['min_date']              = $code_params['min_date'];
-        $settings['max_date']              = $code_params['max_date'];
-        $settings['show_remaining_slots']  = $code_params['show_remaining_slots'];
-        $settings['show_week']             = $code_params['show_week'];
-        $settings['save_form_content']     = $code_params['save_form_content'];
+        $settings['width'] = $code_params['width'];
+        $settings['scroll_off'] = $code_params['scroll_off'];
+        $settings['layout_cols'] = $code_params['layout_cols'];
+        $settings['start_of_week'] = $code_params['start_of_week'];
+        $settings['rtl'] = $code_params['rtl'];
+        $settings['default_date'] = $code_params['default_date'];
+        $settings['min_date'] = $code_params['min_date'];
+        $settings['max_date'] = $code_params['max_date'];
+        $settings['show_remaining_slots'] = $code_params['show_remaining_slots'];
+        $settings['show_week'] = $code_params['show_week'];
+        $settings['save_form_content'] = $code_params['save_form_content'];
 
         // LOCALIZATION
         $settings['trans.please-select-new-date'] = __('Please select another day', 'easy-appointments');
@@ -500,12 +503,16 @@ class EAFrontend
 
         wp_localize_script('ea-front-bootstrap', 'ea_settings', $settings);
 
+        wp_enqueue_script('owl-carousel', 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js', array('jquery'), '2.3.4', true);
+
         wp_enqueue_script('underscore');
         wp_enqueue_script('ea-validator');
         wp_enqueue_script('ea-bootstrap');
         // wp_enqueue_script( 'ea-datepicker-localization' );
         // wp_enqueue_script( 'ea-bootstrap-select' );
         wp_enqueue_script('ea-front-bootstrap');
+
+        wp_enqueue_style('owl-carousel', 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css');
 
         if (empty($settings['css.off'])) {
             wp_enqueue_style('ea-bootstrap');
@@ -520,7 +527,7 @@ class EAFrontend
         }
 
         // add custom CSS
-        wp_add_inline_style( 'ea-bootstrap', $customCss );
+        wp_add_inline_style('ea-bootstrap', $customCss);
 
         ob_start();
 

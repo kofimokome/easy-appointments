@@ -7,6 +7,7 @@
             <% if (settings.layout_cols === '2') { %>
             <div class="col-md-6" style="padding-top: 25px;">
                 <% } %>
+
                 <div class="step form-group">
                     <div class="block"></div>
                     <label class="ea-label col-sm-4 control-label">
@@ -40,8 +41,8 @@
                             <?php $this->get_options('staff', $location_id, $service_id, $worker_id) ?>
                         </select>
                     </div>
-                    <div class="row" id="km-doctors">
-                       <!--Text will be filled via ajax-->
+                    <div class="col-sm-12 col-md-12 col-xs-12" id="km-doctors-container">
+                        <!--Text will be filled via ajax-->
                     </div>
                 </div>
                 <div class="step calendar" class="filter">

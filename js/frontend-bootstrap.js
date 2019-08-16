@@ -370,7 +370,8 @@
                 // default
                 next_element.append('<option value="">-</option>');
 
-                $("#km-doctors").empty();
+                $("#km-doctors-container").empty();
+                $("#km-doctors-container").append("<div id='km-doctors' class='owl-carousel owl-theme'></div>");
 
                 // options
                 jQuery.each(response, function (index, element) {
@@ -378,21 +379,22 @@
                     var name = element.name;
                     console.log(options.next);
                     if (options.next === 'worker') {
-                        var card = '<div class="col-md-6 col-xs-5" id="km-doctor-' + element.id + '" style="cursor: pointer">' +
+                        var card = '<div class="km-doctor item" id="km-doctor-' + element.id + '" style="cursor: pointer">' +
                             '                            <div class="thumbnail">' +
                             '                                <img src="' + element.photo + '" alt="' + element.name + '">' +
                             '                                <div class="caption">' +
-                            '                                    <h3>' + element.name + '</h3>' +
+                            '                                    <h4>' + element.name + '</h4>' +
                             '                                </div>' +
                             '                            </div>' +
                             '                        </div>';
+
                         $("#km-doctors").append(card);
+
                         $("#km-doctor-" + element.id).unbind();
                         $("#km-doctor-" + element.id).click(function (e) {
                             e.preventDefault();
                             $("#km-worker").val(element.id).trigger('change');
                         });
-
                     }
 
                     var $option = jQuery('<option value="' + element.id + '">' + name + '</option>');
@@ -414,6 +416,9 @@
 
                     next_element.append($option);
                 });
+                if (options.next === 'worker') {
+                    jQuery(($) => $("#km-doctors").owlCarousel({margin: 20, nav: true}));
+                }
 
                 // enabled
                 next_element.closest('.step').removeClass('disabled');
