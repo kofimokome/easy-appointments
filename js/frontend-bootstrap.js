@@ -12,6 +12,7 @@
             initScrollOff: false
         };
 
+
     // The actual plugin constructor
     function Plugin(element, options) {
         this.element = element;
@@ -354,6 +355,8 @@
          * Standard call for select options (location, service, worker)
          */
         callServer: function (options, next_element) {
+            //console.log(options);
+            //console.log(next_element);
             var plugin = this;
 
             options.action = 'ea_next_step';

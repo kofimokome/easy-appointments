@@ -438,9 +438,12 @@ class EAFrontend
 
         $settings = $this->options->get_options();
 
+        //echo "kof kofi kofi " . $location_id;
         // unset secret
         unset($settings['captcha.secret-key']);
 
+        $settings['location'] = $location_id;
+        $settings['service'] = $service_id;
         $settings['check'] = wp_create_nonce('ea-bootstrap-form');
 
         $settings['width'] = $code_params['width'];
